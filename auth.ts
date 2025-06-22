@@ -58,6 +58,7 @@ export const {
         token.refresh_token = account.refresh_token;
         token.expires_at =
           Math.floor(Date.now() / 1000) + (account.expires_in || 0);
+        return token;
       } else if (Date.now() < token.expires_at * 1000) {
         // Subsequent logins, but the `access_token` is still valid
         return token;
@@ -77,15 +78,16 @@ export const {
           headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         });
 
-        const tokensOrError = await response.json();
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw errorData;
+        }
 
-        if (!response.ok) throw tokensOrError;
-
-        const newTokens = tokensOrError as {
+        const newTokens: {
           access_token: string;
           expires_in: number;
           refresh_token?: string;
-        };
+        } = await response.json();
 
         return {
           ...token,

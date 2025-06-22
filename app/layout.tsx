@@ -1,6 +1,14 @@
 import { AuthProvider } from '@/components/auth-provider';
 import type { Metadata } from 'next';
+import { IBM_Plex_Sans } from 'next/font/google';
 import './globals.css';
+
+const ibmPlexSans = IBM_Plex_Sans({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-ibm-plex-sans',
+  weight: ['400', '500', '600', '700'],
+});
 
 export const metadata: Metadata = {
   title: 'Tumblr Dashboard',
@@ -14,7 +22,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>
+      <body className={ibmPlexSans.className}>
         <AuthProvider>{children}</AuthProvider>
       </body>
     </html>
