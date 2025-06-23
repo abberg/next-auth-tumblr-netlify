@@ -8,10 +8,10 @@ interface BlogInfoProps {
 
 export function BlogInfo({ post }: BlogInfoProps) {
   return (
-    <div>
+    <div className="px-2">
       <a
         href={post.blog.url}
-        className="flex items-center gap-2 font-bold text-sky-800 hover:text-sky-950 hover:underline"
+        className="flex items-center gap-2 font-semibold text-sky-800 hover:text-sky-950 hover:underline"
       >
         <img
           alt={`${post.blog.name} avatar`}

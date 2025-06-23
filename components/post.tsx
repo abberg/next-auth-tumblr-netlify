@@ -1,14 +1,19 @@
 'use client';
 import type {
+  AudioBlock,
   ContentBlock,
   ImageBlock,
+  LinkBlock,
   TextBlock,
   TumblrPost,
   VideoBlock,
 } from '@/types/tumblr';
+import { AudioBlockComponent } from './audio-block';
 import { BlogInfo } from './blog-info';
 import { ImageBlockComponent } from './image-block';
 import { ImageCarousel } from './image-carousel';
+import { LinkBlockComponent } from './link-block';
+import { ScrollShadowBox } from './scroll-shadow-box';
 import { TextBlockComponent } from './text-block';
 import { VideoBlockComponent } from './video-block';
 
@@ -24,6 +29,14 @@ const isTextBlock = (block: ContentBlock): block is TextBlock => {
   return block.type === 'text';
 };
 
+const isAudioBlock = (block: ContentBlock): block is AudioBlock => {
+  return block.type === 'audio';
+};
+
+const isLinkBlock = (block: ContentBlock): block is LinkBlock => {
+  return block.type === 'link';
+};
+
 const getImageBlocks = (blocks: ContentBlock[]): ImageBlock[] => {
   return blocks.filter(isImageBlock);
 };
@@ -32,8 +45,16 @@ const getVideoBlocks = (blocks: ContentBlock[]): VideoBlock[] => {
   return blocks.filter(isVideoBlock);
 };
 
+const getAudioBlocks = (blocks: ContentBlock[]): AudioBlock[] => {
+  return blocks.filter(isAudioBlock);
+};
+
 const getTextBlocks = (blocks: ContentBlock[]): TextBlock[] => {
   return blocks.filter(isTextBlock);
+};
+
+const getLinkBlocks = (blocks: ContentBlock[]): LinkBlock[] => {
+  return blocks.filter(isLinkBlock);
 };
 
 interface PostProps {
@@ -43,7 +64,9 @@ interface PostProps {
 export function Post({ post }: PostProps) {
   const mainImageBlocks = getImageBlocks(post.content);
   const mainVideoBlocks = getVideoBlocks(post.content);
+  const mainAudioBlocks = getAudioBlocks(post.content);
   const mainTextBlocks = getTextBlocks(post.content);
+  const mainLinkBlocks = getLinkBlocks(post.content);
   const trailImageBlocks =
     post.trail?.flatMap((trailItem) =>
       getImageBlocks(trailItem.content || [])
@@ -52,15 +75,21 @@ export function Post({ post }: PostProps) {
     post.trail?.flatMap((trailItem) =>
       getVideoBlocks(trailItem.content || [])
     ) || [];
+  const trailAudioBlocks =
+    post.trail?.flatMap((trailItem) =>
+      getAudioBlocks(trailItem.content || [])
+    ) || [];
   const trailTextBlocks =
     post.trail?.flatMap((trailItem) =>
       getTextBlocks(trailItem.content || [])
     ) || [];
-
-  const allImageBlocks = [...mainImageBlocks, ...trailImageBlocks];
+  const trailLinkBlocks =
+    post.trail?.flatMap((trailItem) =>
+      getLinkBlocks(trailItem.content || [])
+    ) || [];
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-3">
       {/* Display main content images */}
       {mainImageBlocks.length > 1 ? (
         <ImageCarousel imageBlocks={mainImageBlocks} />
@@ -69,9 +98,17 @@ export function Post({ post }: PostProps) {
       ) : null}
 
       {/* Display main content videos */}
-      {mainVideoBlocks.map((block) => (
-        <VideoBlockComponent key={`video-${block.type}`} block={block} />
-      ))}
+      {mainVideoBlocks.map((block) => {
+        const key = block.media?.url || block.url || block.embed_url;
+        return <VideoBlockComponent key={key} block={block} />;
+      })}
+
+      {/* Display main content audio */}
+      {mainAudioBlocks.map((block) => {
+        const key =
+          block.media?.url || block.url || block.embed_url || block.title;
+        return <AudioBlockComponent key={key} block={block} />;
+      })}
 
       {/* Display trail content images */}
       {trailImageBlocks.length > 1 ? (
@@ -81,22 +118,43 @@ export function Post({ post }: PostProps) {
       ) : null}
 
       {/* Display trail content videos */}
-      {trailVideoBlocks.map((block) => (
-        <VideoBlockComponent key={`trail-video-${block.type}`} block={block} />
-      ))}
+      {trailVideoBlocks.map((block) => {
+        const key = block.media?.url || block.url || block.embed_url;
+        return <VideoBlockComponent key={key} block={block} />;
+      })}
+
+      {/* Display trail content audio */}
+      {trailAudioBlocks.map((block) => {
+        const key =
+          block.media?.url || block.url || block.embed_url || block.title;
+        return <AudioBlockComponent key={key} block={block} />;
+      })}
 
       {/* Display blog info */}
       <BlogInfo post={post} />
 
-      {/* Display main content text */}
-      {mainTextBlocks.map((block) => (
-        <TextBlockComponent key={block.text} block={block} />
-      ))}
+      {/* Display text and link content */}
+      <ScrollShadowBox maxHeight="10lh">
+        {/* Display main content text */}
+        {mainTextBlocks.map((block) => (
+          <TextBlockComponent key={block.text} block={block} />
+        ))}
 
-      {/* Display trail content text */}
-      {trailTextBlocks.map((block, index) => (
-        <TextBlockComponent key={block.text} block={block} />
-      ))}
+        {/* Display trail content text */}
+        {trailTextBlocks.map((block) => (
+          <TextBlockComponent key={block.text} block={block} />
+        ))}
+
+        {/* Display main content links */}
+        {mainLinkBlocks.map((block) => (
+          <LinkBlockComponent key={block.url} block={block} />
+        ))}
+
+        {/* Display trail content links */}
+        {trailLinkBlocks.map((block) => (
+          <LinkBlockComponent key={block.url} block={block} />
+        ))}
+      </ScrollShadowBox>
     </div>
   );
 }
