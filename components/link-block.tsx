@@ -16,7 +16,7 @@ export function LinkBlockComponent({ block }: LinkBlockComponentProps) {
         <img
           src={posterUrl}
           alt={block.title ? `${block.title} thumbnail` : 'Link poster'}
-          className="h-6 w-6 flex-shrink-0 rounded border border-gray-200 bg-gray-100 object-cover"
+          className="h-24 w-24 flex-shrink-0 rounded border border-gray-200 bg-gray-100 object-cover"
         />
       ) : null}
       {/* Link content */}

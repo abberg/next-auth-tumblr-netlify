@@ -13,6 +13,7 @@ import { BlogInfo } from './blog-info';
 import { ImageBlockComponent } from './image-block';
 import { ImageCarousel } from './image-carousel';
 import { LinkBlockComponent } from './link-block';
+import { PostToolbar } from './post-toolbar';
 import { ScrollShadowBox } from './scroll-shadow-box';
 import { TextBlockComponent } from './text-block';
 import { VideoBlockComponent } from './video-block';
@@ -88,6 +89,12 @@ export function Post({ post }: PostProps) {
       getLinkBlocks(trailItem.content || [])
     ) || [];
 
+  const hasTextOrLinkContent =
+    mainTextBlocks.length > 0 ||
+    trailTextBlocks.length > 0 ||
+    mainLinkBlocks.length > 0 ||
+    trailLinkBlocks.length > 0;
+
   return (
     <div className="flex flex-col gap-3">
       {/* Display main content images */}
@@ -134,27 +141,34 @@ export function Post({ post }: PostProps) {
       <BlogInfo post={post} />
 
       {/* Display text and link content */}
-      <ScrollShadowBox maxHeight="10lh">
-        {/* Display main content text */}
-        {mainTextBlocks.map((block) => (
-          <TextBlockComponent key={block.text} block={block} />
-        ))}
-
-        {/* Display trail content text */}
-        {trailTextBlocks.map((block) => (
-          <TextBlockComponent key={block.text} block={block} />
-        ))}
-
-        {/* Display main content links */}
-        {mainLinkBlocks.map((block) => (
-          <LinkBlockComponent key={block.url} block={block} />
-        ))}
-
-        {/* Display trail content links */}
-        {trailLinkBlocks.map((block) => (
-          <LinkBlockComponent key={block.url} block={block} />
-        ))}
-      </ScrollShadowBox>
+      {hasTextOrLinkContent && (
+        <ScrollShadowBox maxHeight="10lh">
+          {/* Display main content text */}
+          {mainTextBlocks.map((block) => (
+            <TextBlockComponent key={block.text} block={block} />
+          ))}
+          {/* Display trail content text */}
+          {trailTextBlocks.map((block) => (
+            <TextBlockComponent key={block.text} block={block} />
+          ))}
+          {/* Display main content links */}
+          {mainLinkBlocks.map((block) => (
+            <LinkBlockComponent key={block.url} block={block} />
+          ))}
+          {/* Display trail content links */}
+          {trailLinkBlocks.map((block) => (
+            <LinkBlockComponent key={block.url} block={block} />
+          ))}
+        </ScrollShadowBox>
+      )}
+      <PostToolbar
+        blogUuid={post.blog.uuid}
+        postId={post.id_string}
+        reblogKey={post.reblog_key}
+        noteCount={post.note_count}
+        postUrl={post.post_url}
+        liked={post.liked}
+      />
     </div>
   );
 }

@@ -1,6 +1,7 @@
 import { AuthProvider } from '@/components/auth-provider';
 import type { Metadata } from 'next';
 import { IBM_Plex_Sans } from 'next/font/google';
+import { Toaster } from 'sonner';
 import './globals.css';
 
 const ibmPlexSans = IBM_Plex_Sans({
@@ -24,6 +25,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={ibmPlexSans.className}>
         <AuthProvider>{children}</AuthProvider>
+        <Toaster />
       </body>
     </html>
   );

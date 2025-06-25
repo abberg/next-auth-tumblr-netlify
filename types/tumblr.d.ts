@@ -167,7 +167,8 @@ export interface TrailItem {
 
 // Post response types
 export interface TumblrPost {
-  id: string;
+  id: number;
+  id_string: string;
   blog: {
     uuid: string;
     name: string;
@@ -175,6 +176,10 @@ export interface TumblrPost {
   };
   content: ContentBlock[];
   layout?: Layout[];
+  liked: boolean;
+  note_count: number;
+  post_url: string;
+  reblog_key: string;
   trail?: TrailItem[];
   is_paywalled?: boolean;
   paywall_access?: 'creator' | 'member' | 'non-member' | 'disabled';

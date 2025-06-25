@@ -126,7 +126,7 @@ export function TextBlockComponent({ block }: TextBlockProps) {
       );
     case 'chat':
       return (
-        <p className="rounded bg-sky-100 px-2 py-1 font-mono">
+        <p className="rounded-xl bg-sky-500 px-3 py-2 text-gray-50">
           {renderFormattedText(block.text, block.formatting)}
         </p>
       );

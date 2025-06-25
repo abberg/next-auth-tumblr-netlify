@@ -55,7 +55,7 @@ export function ImageCarousel({ imageBlocks }: ImageCarouselProps) {
       >
         {imageBlocks.map((block) => (
           <div
-            key={block.media[0].media_key}
+            key={block.media[0].media_key || block.media[0].url}
             className="min-w-0 flex-[0_0_100%]"
           >
             <ImageBlockComponent block={block} />
@@ -68,7 +68,7 @@ export function ImageCarousel({ imageBlocks }: ImageCarouselProps) {
         <div className="mt-2 flex justify-center gap-2">
           {imageBlocks.map((block, index) => (
             <button
-              key={`dot-${block.media[0].media_key}`}
+              key={`dot-${block.media[0].media_key || block.media[0].url}`}
               type="button"
               className={`h-2 w-2 rounded-full transition-colors ${
                 index === selectedIndex ? 'bg-gray-600' : 'bg-gray-300'
