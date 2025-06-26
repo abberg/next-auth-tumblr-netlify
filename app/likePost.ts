@@ -21,5 +21,6 @@ export async function likePost({
   if (!res.ok) {
     throw new Error(`${res.status} - ${res.statusText}`);
   }
-  return res;
+
+  return { meta: { status: 200 } };
 }

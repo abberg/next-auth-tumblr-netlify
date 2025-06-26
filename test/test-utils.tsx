@@ -1,9 +1,9 @@
+import { AuthProvider } from '@/components/auth-provider';
 import {
   type RenderOptions,
   render as rtlRender,
 } from '@testing-library/react';
 import type { ReactElement } from 'react';
-import { AuthProvider } from '../components/auth-provider';
 
 function render(
   ui: ReactElement,

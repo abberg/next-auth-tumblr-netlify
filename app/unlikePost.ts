@@ -21,5 +21,5 @@ export async function unlikePost({
   if (!res.ok) {
     throw new Error('Failed to unlike post');
   }
-  return await res.json();
+  return { meta: { status: 200 } };
 }

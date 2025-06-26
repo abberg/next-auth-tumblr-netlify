@@ -41,14 +41,51 @@ This creates a static build of Storybook for deployment.
   - Short content (no scroll)
   - With custom styling
 
+- **ToastDemo** - Interactive toast notification customization and testing
+  - Default configuration
+  - Different positions (top-right, bottom-left, top-center, etc.)
+  - Theme variations (light, dark)
+  - With rich colors enabled
+  - With close buttons
+  - Custom durations
+  - Full customization example
+
+## Component Organization
+
+Each component is organized in its own folder under `components/`:
+
+```
+components/
+├── post-toolbar/
+│   ├── index.ts
+│   ├── post-toolbar.tsx
+│   └── post-toolbar.stories.tsx
+├── blog-info/
+│   ├── index.ts
+│   ├── blog-info.tsx
+│   └── blog-info.stories.tsx
+├── scroll-shadow-box/
+│   ├── index.ts
+│   ├── scroll-shadow-box.tsx
+│   └── scroll-shadow-box.stories.tsx
+└── ...
+```
+
 ## Creating New Stories
 
 To create a story for a new component:
 
-1. Create a file named `[component-name].stories.tsx` in the `components/` directory
-2. Import the component and Storybook types:
+1. Create a folder for your component: `components/your-component/`
+2. Move your component file to the folder: `components/your-component/your-component.tsx`
+3. Create an index file: `components/your-component/index.ts`
+4. Create a story file: `components/your-component/your-component.stories.tsx`
 
+Example structure:
 ```tsx
+// components/your-component/index.ts
+export { YourComponent } from './your-component';
+
+// components/your-component/your-component.stories.tsx
 import type { Meta, StoryObj } from '@storybook/nextjs';
 import { YourComponent } from './your-component';
 
@@ -93,4 +130,5 @@ Storybook is configured in `.storybook/main.ts` and `.storybook/preview.ts`:
 - Use the `layout: 'centered'` parameter to center components in the preview
 - Add `argTypes` to create interactive controls for your component props
 - Use the `parameters` object to configure story-specific settings
-- Import global styles in `preview.ts` to ensure components render correctly 
+- Import global styles in `preview.ts` to ensure components render correctly
+- Use decorators to wrap components in specific contexts (like width constraints) 

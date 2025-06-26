@@ -1,4 +1,13 @@
 'use client';
+import { AudioBlockComponent } from '@/components/audio-block';
+import { BlogInfo } from '@/components/blog-info';
+import { ImageBlockComponent } from '@/components/image-block';
+import { ImageCarousel } from '@/components/image-carousel';
+import { LinkBlockComponent } from '@/components/link-block';
+import { PostToolbar } from '@/components/post-toolbar';
+import { ScrollShadowBox } from '@/components/scroll-shadow-box';
+import { TextBlockComponent } from '@/components/text-block';
+import { VideoBlockComponent } from '@/components/video-block';
 import type {
   AudioBlock,
   ContentBlock,
@@ -8,15 +17,6 @@ import type {
   TumblrPost,
   VideoBlock,
 } from '@/types/tumblr';
-import { AudioBlockComponent } from './audio-block';
-import { BlogInfo } from './blog-info';
-import { ImageBlockComponent } from './image-block';
-import { ImageCarousel } from './image-carousel';
-import { LinkBlockComponent } from './link-block';
-import { PostToolbar } from './post-toolbar';
-import { ScrollShadowBox } from './scroll-shadow-box';
-import { TextBlockComponent } from './text-block';
-import { VideoBlockComponent } from './video-block';
 
 const isImageBlock = (block: ContentBlock): block is ImageBlock => {
   return block.type === 'image';

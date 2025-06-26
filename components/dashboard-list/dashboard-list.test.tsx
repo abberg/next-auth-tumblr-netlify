@@ -1,5 +1,5 @@
+import { render } from '@/test/test-utils';
 import { describe, expect, it } from 'vitest';
-import { render } from '../test/test-utils';
 import { DashboardList } from './dashboard-list';
 
 describe('DashboardList', () => {
@@ -16,9 +16,14 @@ describe('DashboardList', () => {
   it('renders JSON tree when posts are provided', () => {
     const mockPosts = [
       {
-        id: '12345',
+        id: 12345,
+        id_string: '12345',
         blog: { uuid: '', name: '', url: '' },
         content: [],
+        note_count: 0,
+        liked: false,
+        post_url: '',
+        reblog_key: '',
       },
     ];
 

@@ -1,9 +1,9 @@
 'use client';
 
+import { fetchDashboard } from '@/app/fetchDashboard';
+import { DashboardList } from '@/components/dashboard-list';
 import type { TumblrPost } from '@/types/tumblr';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { fetchDashboard } from '../app/fetchDashboard';
-import { DashboardList } from './dashboard-list';
 
 interface DashboardFeedProps {
   initialPosts: TumblrPost[];

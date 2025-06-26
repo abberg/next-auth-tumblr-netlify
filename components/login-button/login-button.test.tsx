@@ -1,6 +1,6 @@
+import { render, screen } from '@/test/test-utils';
 import { signIn, signOut } from 'next-auth/react';
 import { type Mock, describe, expect, it, vi } from 'vitest';
-import { render, screen } from '../test/test-utils';
 import { LoginButton } from './login-button';
 
 const mockUseSession = vi.fn() as Mock;

@@ -7,6 +7,13 @@ const meta: Meta<typeof PostToolbar> = {
   parameters: {
     layout: 'centered',
   },
+  decorators: [
+    (Story) => (
+      <div style={{ width: '350px' }}>
+        <Story />
+      </div>
+    ),
+  ],
   tags: ['autodocs'],
   argTypes: {
     noteCount: {

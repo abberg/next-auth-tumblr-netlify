@@ -1,9 +1,9 @@
 'use client';
 
+import { ImageBlockComponent } from '@/components/image-block';
 import type { ImageBlock } from '@/types/tumblr';
 import useEmblaCarousel from 'embla-carousel-react';
 import { useCallback, useEffect, useState } from 'react';
-import { ImageBlockComponent } from './image-block';
 
 interface ImageCarouselProps {
   imageBlocks: ImageBlock[];

@@ -1,6 +1,6 @@
 'use client';
+import { Post } from '@/components/post';
 import type { TumblrPost } from '@/types/tumblr';
-import { Post } from './post';
 
 interface DashboardListProps {
   posts?: TumblrPost[];
