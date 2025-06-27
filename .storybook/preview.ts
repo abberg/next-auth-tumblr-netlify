@@ -9,8 +9,51 @@ const preview: Preview = {
         color: /(background|color)$/i,
         date: /Date$/i,
       },
+      expanded: true,
     },
     layout: 'centered',
+    viewport: {
+      viewports: {
+        mobile: {
+          name: 'Mobile',
+          styles: {
+            width: '375px',
+            height: '667px',
+          },
+        },
+        tablet: {
+          name: 'Tablet',
+          styles: {
+            width: '768px',
+            height: '1024px',
+          },
+        },
+        desktop: {
+          name: 'Desktop',
+          styles: {
+            width: '1200px',
+            height: '800px',
+          },
+        },
+      },
+    },
+    backgrounds: {
+      default: 'light',
+      values: [
+        {
+          name: 'light',
+          value: '#ffffff',
+        },
+        {
+          name: 'dark',
+          value: '#1a1a1a',
+        },
+        {
+          name: 'gray',
+          value: '#f5f5f5',
+        },
+      ],
+    },
   },
 };
 

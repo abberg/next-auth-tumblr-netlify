@@ -52,7 +52,7 @@ function renderFormattedText(
           <a
             key={`l-${f.start}`}
             href={f.url}
-            className="text-sky-800 underline hover:text-sky-950"
+            className="break-all text-sky-800 underline hover:text-sky-950"
           >
             {inside}
           </a>

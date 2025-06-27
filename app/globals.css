@@ -1,1 +1,81 @@
-@import 'tailwindcss';
+@import "tailwindcss";
+
+@theme {
+  --ease-out-quad: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+
+  --animate-dash: 1s var(--ease-out-quad) dash;
+  --animate-arrow: 1s var(--ease-out-quad) arrow;
+
+  @keyframes dash {
+    0% {
+      stroke-dasharray: 18 39;
+      stroke-dashoffset: -4;
+    }
+    100% {
+      stroke-dasharray: 18 39;
+      stroke-dashoffset: -61;
+    }
+  }
+
+  @keyframes arrow {
+    0% {
+      offset-distance: 0%;
+    }
+    100% {
+      offset-distance: 100%;
+    }
+  }
+
+  --animate-pop-heart: 300ms cubic-bezier(0.44, 1.8, 0.71, 0.99) 150ms pop-heart;
+  --animate-pop-diagonal: 300ms cubic-bezier(0.25, 0.46, 0.45, 0.94)
+    pop-diagonal;
+  --animate-pop-horizontal: 300ms cubic-bezier(0.25, 0.46, 0.45, 0.94)
+    pop-horizontal;
+
+  @keyframes pop-heart {
+    0% {
+      transform: scale(0, 0);
+      opacity: 1;
+    }
+    100% {
+      transform: scale(1, 1);
+      opacity: 1;
+    }
+  }
+
+  @keyframes pop-diagonal {
+    0% {
+      stroke: var(--color-red-500);
+      stroke-width: 2;
+      stroke-dasharray: 10 24;
+      stroke-dashoffset: 17;
+    }
+    99% {
+      stroke: var(--color-red-500);
+      stroke-width: 2;
+      stroke-dasharray: 10 24;
+      stroke-dashoffset: -17;
+    }
+    100% {
+      stroke: none;
+    }
+  }
+
+  @keyframes pop-horizontal {
+    0% {
+      stroke: var(--color-red-500);
+      stroke-width: 2;
+      stroke-dasharray: 3 21;
+      stroke-dashoffset: 12;
+    }
+    99% {
+      stroke: var(--color-red-500);
+      stroke-width: 2;
+      stroke-dasharray: 3 21;
+      stroke-dashoffset: -12;
+    }
+    100% {
+      stroke: none;
+    }
+  }
+}

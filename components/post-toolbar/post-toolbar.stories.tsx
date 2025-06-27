@@ -6,6 +6,12 @@ const meta: Meta<typeof PostToolbar> = {
   component: PostToolbar,
   parameters: {
     layout: 'centered',
+    docs: {
+      description: {
+        component:
+          'A toolbar component that displays post actions including like, reblog, and note count. Provides interactive controls for post engagement.',
+      },
+    },
   },
   decorators: [
     (Story) => (
@@ -18,17 +24,29 @@ const meta: Meta<typeof PostToolbar> = {
   argTypes: {
     noteCount: {
       control: { type: 'number' },
+      description: 'The number of notes (likes + reblogs) on the post',
     },
     liked: {
       control: { type: 'boolean' },
+      description: 'Whether the current user has liked this post',
+    },
+    blogUuid: {
+      control: { type: 'text' },
+      description: 'The UUID of the blog that owns the post',
+    },
+    postId: {
+      control: { type: 'text' },
+      description: 'The ID of the post',
+    },
+    reblogKey: {
+      control: { type: 'text' },
+      description: 'The reblog key for the post',
+    },
+    postUrl: {
+      control: { type: 'text' },
+      description: 'The URL of the post',
     },
   },
-};
-
-export default meta;
-type Story = StoryObj<typeof meta>;
-
-export const Default: Story = {
   args: {
     blogUuid: 'test-blog-uuid',
     postId: '123456789',
@@ -39,23 +57,49 @@ export const Default: Story = {
   },
 };
 
+export default meta;
+type Story = StoryObj<typeof meta>;
+
+export const Default: Story = {
+  args: {},
+};
+
 export const Liked: Story = {
   args: {
-    ...Default.args,
     liked: true,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'PostToolbar showing a post that has been liked by the current user.',
+      },
+    },
   },
 };
 
 export const HighNoteCount: Story = {
   args: {
-    ...Default.args,
     noteCount: 1234,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'PostToolbar with a high note count to test number formatting.',
+      },
+    },
   },
 };
 
 export const ZeroNotes: Story = {
   args: {
-    ...Default.args,
     noteCount: 0,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'PostToolbar with zero notes to test empty state display.',
+      },
+    },
   },
 };

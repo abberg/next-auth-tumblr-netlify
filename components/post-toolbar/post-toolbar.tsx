@@ -1,8 +1,8 @@
 import { likePost } from '@/app/likePost';
 import { reblogPost } from '@/app/reblogPost';
 import { unlikePost } from '@/app/unlikePost';
-import { LikeIcon } from '@/components/like-icon';
-import { ReblogIcon } from '@/components/reblog-icon';
+import { LikeButton } from '@/components/like-button';
+import { ReblogButton } from '@/components/reblog-button';
 import { startTransition, useOptimistic, useState } from 'react';
 import { toast } from 'sonner';
 
@@ -133,23 +133,9 @@ export function PostToolbar({
       {/* Buttons */}
       <div className="flex items-center gap-2">
         {/* Like button */}
-        <button
-          type="button"
-          aria-label={optimisticLiked ? 'Unlike' : 'Like'}
-          onClick={handleLike}
-          className={`group rounded p-1 transition-colors ${optimisticLiked ? 'text-pink-600' : 'text-gray-400 hover:text-pink-600'}`}
-        >
-          <LikeIcon isLiked={optimisticLiked} />
-        </button>
+        <LikeButton isLiked={optimisticLiked} onClick={handleLike} />
         {/* Reblog button */}
-        <button
-          type="button"
-          aria-label="Reblog"
-          onClick={handleReblog}
-          className="group rounded p-1 text-gray-400 transition-colors hover:text-green-600"
-        >
-          <ReblogIcon />
-        </button>
+        <ReblogButton onClick={handleReblog} />
       </div>
     </div>
   );

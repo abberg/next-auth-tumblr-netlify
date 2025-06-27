@@ -6,10 +6,18 @@ const meta: Meta<typeof BlogInfo> = {
   component: BlogInfo,
   parameters: {
     layout: 'centered',
+    docs: {
+      description: {
+        component:
+          'A component that displays blog information including the blog name and URL. Used to show attribution for posts.',
+      },
+    },
   },
+  tags: ['autodocs'],
   argTypes: {
     post: {
       control: { type: 'object' },
+      description: 'The post object containing blog information',
     },
   },
 };
@@ -48,6 +56,13 @@ export const LongBlogName: Story = {
       },
     },
   },
+  parameters: {
+    docs: {
+      description: {
+        story: 'BlogInfo with a long blog name to test text wrapping behavior.',
+      },
+    },
+  },
 };
 
 export const ShortBlogName: Story = {
@@ -57,6 +72,13 @@ export const ShortBlogName: Story = {
       blog: {
         ...mockPost.blog,
         name: 'Short',
+      },
+    },
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'BlogInfo with a short blog name to test minimal text display.',
       },
     },
   },

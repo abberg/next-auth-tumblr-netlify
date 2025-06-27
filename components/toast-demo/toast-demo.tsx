@@ -33,32 +33,6 @@ export function ToastDemo({
     });
   };
 
-  const showInfoToast = () => {
-    toast.info('This is an informational message.', {
-      duration,
-    });
-  };
-
-  const showWarningToast = () => {
-    toast.warning('This is a warning message.', {
-      duration,
-    });
-  };
-
-  const showCustomToast = () => {
-    toast('This is a custom toast message.', {
-      duration,
-    });
-  };
-
-  const showPromiseToast = () => {
-    toast.promise(new Promise((resolve) => setTimeout(resolve, 2000)), {
-      loading: 'Loading...',
-      success: 'Promise resolved!',
-      error: 'Promise rejected!',
-    });
-  };
-
   return (
     <div className="space-y-4 p-6">
       <div className="space-y-2">
@@ -69,7 +43,7 @@ export function ToastDemo({
         </p>
       </div>
 
-      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+      <div className="grid grid-cols-2 gap-3">
         <button
           type="button"
           onClick={showSuccessToast}
@@ -84,38 +58,6 @@ export function ToastDemo({
           className="rounded-md bg-red-600 px-4 py-2 font-medium text-sm text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
         >
           Error Toast
-        </button>
-
-        <button
-          type="button"
-          onClick={showInfoToast}
-          className="rounded-md bg-blue-600 px-4 py-2 font-medium text-sm text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-        >
-          Info Toast
-        </button>
-
-        <button
-          type="button"
-          onClick={showWarningToast}
-          className="rounded-md bg-yellow-600 px-4 py-2 font-medium text-sm text-white hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2"
-        >
-          Warning Toast
-        </button>
-
-        <button
-          type="button"
-          onClick={showCustomToast}
-          className="rounded-md bg-gray-600 px-4 py-2 font-medium text-sm text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
-        >
-          Custom Toast
-        </button>
-
-        <button
-          type="button"
-          onClick={showPromiseToast}
-          className="rounded-md bg-purple-600 px-4 py-2 font-medium text-sm text-white hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
-        >
-          Promise Toast
         </button>
       </div>
 
