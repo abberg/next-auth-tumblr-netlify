@@ -1,8 +1,8 @@
 // Common object types
 export interface MediaObject {
-  media_key: string;
+  media_key?: string;
   url: string;
-  type: string;
+  type?: string;
   width?: number;
   height?: number;
   original_dimensions_missing?: boolean;
@@ -95,7 +95,7 @@ export interface AudioBlock extends BaseBlock {
   title?: string;
   artist?: string;
   album?: string;
-  poster?: MediaObject;
+  poster?: MediaObject[];
   embed_html?: string;
   embed_url?: string;
   metadata?: Record<string, unknown>;

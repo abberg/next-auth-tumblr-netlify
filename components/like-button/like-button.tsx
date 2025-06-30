@@ -52,7 +52,7 @@ export function LikeButton({
         className="size-5 hover:cursor-pointer"
       >
         <g
-          className={clsx('fill-none stroke-2 stroke-gray-400', {
+          className={clsx('fill-none stroke-2 stroke-gray-500', {
             'stroke-red-500': isLiked,
             'origin-center animate-pop-heart stroke-red-500 opacity-0':
               isHeartAnimating,

@@ -19,25 +19,39 @@ export function BlogInfo({ post }: BlogInfoProps) {
           width="30"
           height="30"
         />
-        {post.blog.name}
+        <span className="min-w-0 max-w-full overflow-hidden overflow-ellipsis whitespace-nowrap">
+          {post.blog.name}
+        </span>
       </a>
       {post.trail && post.trail.length > 0 && (
         <a
           href={post.trail?.[0]?.blog?.url}
-          className="ms-9 flex items-center gap-1 text-gray-400 text-sm leading-3.5 hover:text-gray-600 hover:underline"
+          className="ms-9 flex items-center gap-1 text-gray-500 text-sm leading-4 hover:text-gray-600 hover:underline"
         >
           <svg
+            viewBox="0 0 24 24"
             xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 16 16"
-            fill="currentColor"
-            className="size-4"
+            aria-hidden="true"
+            className="h-[1lh] fill-none stroke-2 stroke-gray-500"
           >
-            <title>Reblogged</title>
-            <path
-              fillRule="evenodd"
-              d="M8 3.5c-.771 0-1.537.022-2.297.066a1.124 1.124 0 0 0-1.058 1.028l-.018.214a.75.75 0 1 1-1.495-.12l.018-.221a2.624 2.624 0 0 1 2.467-2.399 41.628 41.628 0 0 1 4.766 0 2.624 2.624 0 0 1 2.467 2.399c.056.662.097 1.329.122 2l.748-.748a.75.75 0 1 1 1.06 1.06l-2 2.001a.75.75 0 0 1-1.061 0l-2-1.999a.75.75 0 0 1 1.061-1.06l.689.688a39.89 39.89 0 0 0-.114-1.815 1.124 1.124 0 0 0-1.058-1.028A40.138 40.138 0 0 0 8 3.5ZM3.22 7.22a.75.75 0 0 1 1.061 0l2 2a.75.75 0 1 1-1.06 1.06l-.69-.69c.025.61.062 1.214.114 1.816.048.56.496.996 1.058 1.028a40.112 40.112 0 0 0 4.594 0 1.124 1.124 0 0 0 1.058-1.028 39.2 39.2 0 0 0 .018-.219.75.75 0 1 1 1.495.12l-.018.226a2.624 2.624 0 0 1-2.467 2.399 41.648 41.648 0 0 1-4.766 0 2.624 2.624 0 0 1-2.467-2.399 41.395 41.395 0 0 1-.122-2l-.748.748A.75.75 0 1 1 1.22 9.22l2-2Z"
-              clipRule="evenodd"
-            />
+            <g>
+              <path
+                className="[stroke-dasharray:18_39] [stroke-dashoffset:-4]"
+                d="M19 6 Q21 6 21 8 L21 16 Q21 18 19 18 L5 18 Q3 18 3 16 L3 8 Q3 6 5 6 Z"
+              />
+              <polyline
+                className="absolute [offset-path:path('M19_6_Q21_6_21_8_L21_16_Q21_18_19_18_L5_18_Q3_18_3_16_L3_8_Q3_6_5_6_Z')]"
+                points="-3 -3 0 0 -3 3"
+              />
+              <path
+                className="[stroke-dasharray:18_39] [stroke-dashoffset:-4]"
+                d="M6 18 Q4 18 4 16 L4 8 Q4 6 6 6 L18 6 Q20 6 20 8 L20 16 Q20 18 18 18 Z"
+              />
+              <polyline
+                className="absolute [offset-path:path('M6_18_Q4_18_4_16_L4_8_Q4_6_6_6_L18_6_Q20_6_20_8_L20_16_Q20_18_18_18_Z')]"
+                points="-3 -3 0 0 -3 3"
+              />
+            </g>
           </svg>
           {post.trail?.[0]?.blog?.name}
         </a>

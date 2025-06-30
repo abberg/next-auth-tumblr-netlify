@@ -29,8 +29,8 @@ interface PostDebugProps {
 
 export function PostDebug({ data }: PostDebugProps) {
   return (
-    <div className="rounded bg-[rgba(36,40,59,0.95)] *:bg-transparent! px-3 pt-0.5 pb-2 font-mono font-normal text-sm fixed top-4 left-4 w-sm max-h-[550px] overflow-y-auto">
+    <div className="fixed top-4 left-4 max-h-[550px] w-sm overflow-y-auto rounded bg-[rgba(36,40,59,0.95)] px-3 pt-0.5 pb-2 font-mono font-normal text-sm *:bg-transparent!">
       <JSONTree data={data} theme={theme} />
     </div>
   );
-} 
+}

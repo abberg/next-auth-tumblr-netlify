@@ -87,8 +87,10 @@ function renderFormattedText(
 }
 
 export function TextBlockComponent({ block }: TextBlockProps) {
-  // Handle empty text blocks (skip rendering)
-  if (!block.text) return null;
+  // Handle empty text blocks (return empty element to preserve new lines)
+  if (!block.text) {
+    return <br />;
+  }
 
   // Handle subtypes
   switch (block.subtype) {

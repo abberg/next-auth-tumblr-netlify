@@ -82,6 +82,7 @@ export function ScrollShadowBox({
         ref={ref}
         className="min-h-0 overflow-y-auto px-2"
         style={{ maxHeight: maxHeight }}
+        tabIndex={showTop || showBottom ? 0 : undefined}
       >
         {children}
       </div>

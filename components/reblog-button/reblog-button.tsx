@@ -34,7 +34,7 @@ export function ReblogButton({
         viewBox="0 0 24 24"
         xmlns="http://www.w3.org/2000/svg"
         aria-hidden="true"
-        className="size-5 fill-none stroke-2 stroke-gray-400"
+        className="size-5 fill-none stroke-2 stroke-gray-500"
       >
         <g onAnimationEnd={handleArrowAnimationEnd}>
           <path

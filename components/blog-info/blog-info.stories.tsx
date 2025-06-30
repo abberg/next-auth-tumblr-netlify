@@ -30,14 +30,15 @@ const mockPost = {
   id_string: '123456789',
   blog: {
     uuid: 'test-blog-uuid',
-    name: 'Test Blog',
-    url: 'https://testblog.tumblr.com',
+    name: 'staff',
+    url: 'https://staff.tumblr.com',
   },
   content: [],
   note_count: 42,
   liked: false,
   reblog_key: 'test-reblog-key',
-  post_url: 'https://testblog.tumblr.com/post/123456789',
+  post_url:
+    'https://staff.tumblr.com/post/769680688183164928/tumblr-theyre-here-communities-are-finally',
 };
 
 export const Default: Story = {
@@ -52,33 +53,59 @@ export const LongBlogName: Story = {
       ...mockPost,
       blog: {
         ...mockPost.blog,
-        name: 'This is a very long blog name that might wrap to multiple lines',
+        name: 'yodawgiheardyoulikemecha',
       },
     },
   },
   parameters: {
     docs: {
       description: {
-        story: 'BlogInfo with a long blog name to test text wrapping behavior.',
+        story:
+          'BlogInfo with a long blog name to test text truncation behavior.',
       },
     },
   },
+  decorators: [
+    (Story) => (
+      <div className="w-60">
+        <Story />
+      </div>
+    ),
+  ],
 };
 
-export const ShortBlogName: Story = {
+export const RebloggedPost: Story = {
   args: {
     post: {
       ...mockPost,
       blog: {
-        ...mockPost.blog,
-        name: 'Short',
+        uuid: 'reblogger-uuid',
+        name: 'rebloggiest-reblogger',
+        url: 'https://rebloggiest-reblogger.tumblr.com',
       },
+      trail: [
+        {
+          blog: {
+            uuid: 'original-blog-uuid',
+            name: 'originalblog',
+            url: 'https://originalblog.tumblr.com',
+          },
+          content: [
+            {
+              type: 'text',
+              text: 'This is the original content that was reblogged.',
+            },
+          ],
+          layout: [],
+        },
+      ],
     },
   },
   parameters: {
     docs: {
       description: {
-        story: 'BlogInfo with a short blog name to test minimal text display.',
+        story:
+          'BlogInfo showing a reblogged post with the original blog attribution and reblog icon.',
       },
     },
   },

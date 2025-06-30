@@ -1,4 +1,5 @@
 import type { AudioBlock } from '@/types/tumblr';
+import { clsx } from 'clsx';
 import type React from 'react';
 
 interface AudioBlockComponentProps {
@@ -6,12 +7,24 @@ interface AudioBlockComponentProps {
 }
 
 export function AudioBlockComponent({ block }: AudioBlockComponentProps) {
+  console.log(JSON.stringify(block));
+  // If embed_html is present, render only the embed and skip poster/metadata
+  if (block.embed_html) {
+    return (
+      <div
+        className={clsx({
+          '*:h-[352px] *:max-w-fit': block.provider === 'spotify',
+          '*:aspect-square *:h-auto *:max-w-full':
+            block.provider === 'soundcloud',
+        })}
+        // biome-ignore lint/security/noDangerouslySetInnerHtml: trusted embed from Tumblr API
+        dangerouslySetInnerHTML={{ __html: block.embed_html }}
+      />
+    );
+  }
+
   // Poster image (first in array if present)
-  const poster =
-    Array.isArray(block.poster) && block.poster.length > 0
-      ? block.poster[0]
-      : block.poster;
-  const posterUrl = poster?.url;
+  const posterUrl = block.poster?.[0]?.url;
 
   // Waterfall rendering logic
   let mainContent: React.ReactNode = null;
@@ -28,15 +41,6 @@ export function AudioBlockComponent({ block }: AudioBlockComponentProps) {
         <track kind="captions" src={undefined} label="English" />
         Your browser does not support the audio element.
       </audio>
-    );
-  } else if (block.embed_html) {
-    // Embedded HTML
-    mainContent = (
-      <div
-        className="w-full"
-        // biome-ignore lint/security/noDangerouslySetInnerHtml: trusted embed from Tumblr API
-        dangerouslySetInnerHTML={{ __html: block.embed_html }}
-      />
     );
   } else if (block.embed_url) {
     // Embedded iframe

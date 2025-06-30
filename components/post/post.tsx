@@ -144,12 +144,18 @@ export function Post({ post }: PostProps) {
       {hasTextOrLinkContent && (
         <ScrollShadowBox maxHeight="10lh">
           {/* Display main content text */}
-          {mainTextBlocks.map((block) => (
-            <TextBlockComponent key={block.text} block={block} />
+          {mainTextBlocks.map((block, index) => (
+            <TextBlockComponent
+              key={`${post.id_string}_txt_${index}`}
+              block={block}
+            />
           ))}
           {/* Display trail content text */}
-          {trailTextBlocks.map((block) => (
-            <TextBlockComponent key={block.text} block={block} />
+          {trailTextBlocks.map((block, index) => (
+            <TextBlockComponent
+              key={`${post.id_string}_ttxt_${index}`}
+              block={block}
+            />
           ))}
           {/* Display main content links */}
           {mainLinkBlocks.map((block) => (

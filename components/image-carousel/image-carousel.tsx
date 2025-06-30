@@ -52,6 +52,7 @@ export function ImageCarousel({ imageBlocks }: ImageCarouselProps) {
         className="flex w-full border-0 bg-transparent p-0"
         onClick={scrollNext}
         type="button"
+        aria-label="Scroll to next image"
       >
         {imageBlocks.map((block) => (
           <div
@@ -74,6 +75,7 @@ export function ImageCarousel({ imageBlocks }: ImageCarouselProps) {
                 index === selectedIndex ? 'bg-gray-600' : 'bg-gray-300'
               }`}
               onClick={() => scrollTo(index)}
+              aria-label={`Scroll to image ${index + 1}`}
             />
           ))}
         </div>

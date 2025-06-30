@@ -125,13 +125,13 @@ export function PostToolbar({
         href={postUrl}
         target="_blank"
         rel="noopener noreferrer"
-        className="font-medium text-gray-400 hover:text-sky-800 hover:underline"
+        className="font-medium text-gray-500 hover:text-gray-600 hover:underline"
         title="View post on Tumblr"
       >
         {optimisticNoteCount.toLocaleString()} notes
       </a>
       {/* Buttons */}
-      <div className="flex items-center gap-2">
+      <div>
         {/* Like button */}
         <LikeButton isLiked={optimisticLiked} onClick={handleLike} />
         {/* Reblog button */}
