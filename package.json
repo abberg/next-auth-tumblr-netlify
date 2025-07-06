@@ -50,6 +50,7 @@
     "jsdom": "^26.1.0",
     "playwright": "^1.53.1",
     "storybook": "^9.0.13",
+    "tailwind-scrollbar": "^4.0.2",
     "tailwindcss": "^4",
     "typescript": "^5",
     "vitest": "^3.2.3"

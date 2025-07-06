@@ -6,11 +6,13 @@ import type { TumblrResponse } from '@/types/tumblr';
 interface FetchDashboardParams {
   offset?: number;
   limit?: number;
+  since_id?: string;
 }
 
 export async function fetchDashboard({
   offset = 0,
   limit = 18,
+  since_id,
 }: FetchDashboardParams) {
   const session = await auth();
   const token = session?.access_token;
@@ -23,6 +25,11 @@ export async function fetchDashboard({
     offset: offset.toString(),
     npf: 'true',
   });
+
+  // Add since_id if provided
+  if (since_id) {
+    params.append('since_id', since_id);
+  }
 
   const url = `http://api.tumblr.com/v2/user/dashboard?${params}`;
   const res = await fetch(url, {

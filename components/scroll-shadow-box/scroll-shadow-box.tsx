@@ -80,7 +80,7 @@ export function ScrollShadowBox({
       />
       <div
         ref={ref}
-        className="min-h-0 overflow-y-auto px-2"
+        className="scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-transparent min-h-0 overflow-y-auto px-2"
         style={{ maxHeight: maxHeight }}
         tabIndex={showTop || showBottom ? 0 : undefined}
       >
