@@ -16,7 +16,11 @@ export async function fetchDashboard({
 }: FetchDashboardParams) {
   const session = await auth();
   const token = session?.access_token;
+
   if (!token) {
+    if (session?.error === 'RefreshTokenError') {
+      throw new Error('Session expired. Please sign in again.');
+    }
     throw new Error('User is not authenticated');
   }
 

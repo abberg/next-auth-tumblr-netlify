@@ -59,6 +59,7 @@ export const {
         token.expires_at =
           Math.floor(Date.now() / 1000) + (account.expires_in || 0);
         return token;
+        // biome-ignore lint/style/noUselessElse: this is useful, even with a return
       } else if (Date.now() < token.expires_at * 1000) {
         // Subsequent logins, but the `access_token` is still valid
         return token;
@@ -83,11 +84,36 @@ export const {
           throw errorData;
         }
 
-        const newTokens: {
+        let newTokens: {
           access_token: string;
           expires_in: number;
           refresh_token?: string;
-        } = await response.json();
+        };
+
+        try {
+          newTokens = await response.json();
+        } catch (parseError) {
+          console.error('Failed to parse token refresh response:', parseError);
+          // Clear the refresh token since it's likely invalid
+          return {
+            ...token,
+            refresh_token: undefined,
+            error: 'RefreshTokenError',
+          };
+        }
+
+        // Validate the required fields
+        if (
+          !newTokens.access_token ||
+          typeof newTokens.expires_in !== 'number'
+        ) {
+          console.error('Invalid token response structure:', newTokens);
+          return {
+            ...token,
+            refresh_token: undefined,
+            error: 'RefreshTokenError',
+          };
+        }
 
         return {
           ...token,

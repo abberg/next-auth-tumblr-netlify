@@ -17,7 +17,14 @@ export async function reblogPost({
 }: ReblogParams) {
   const session = await auth();
   const token = session?.access_token;
-  if (!token) throw new Error('Not authenticated');
+
+  if (!token) {
+    if (session?.error === 'RefreshTokenError') {
+      throw new Error('Session expired. Please sign in again.');
+    }
+    throw new Error('Not authenticated');
+  }
+
   const blogIdentifier = session.user?.name;
 
   const res = await fetch(
@@ -38,6 +45,9 @@ export async function reblogPost({
   );
 
   if (!res.ok) {
+    if (res.status === 401) {
+      throw new Error('Session expired. Please sign in again.');
+    }
     throw new Error('Failed to reblog post');
   }
   return await res.json();
