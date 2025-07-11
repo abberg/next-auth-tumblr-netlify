@@ -96,7 +96,7 @@ export function ImageBlockComponent({ block }: ImageBlockProps) {
         ref={imageRef}
         src={imageUrl}
         alt={block.alt_text ?? ''}
-        className={`relative z-10 h-auto w-full rounded transition-opacity duration-200 ${
+        className={`h-auto w-full rounded transition-opacity duration-200 ${
           isHidden ? 'opacity-0' : 'opacity-100'
         }`}
         width={imageWidth}
@@ -106,7 +106,7 @@ export function ImageBlockComponent({ block }: ImageBlockProps) {
 
       <canvas
         ref={canvasRef}
-        className={`absolute inset-0 z-0 h-auto w-full rounded transition-opacity duration-200 ${
+        className={`absolute inset-0 h-auto w-full rounded transition-opacity duration-200 ${
           isHidden ? 'opacity-100' : 'opacity-0'
         }`}
         width={imageWidth}

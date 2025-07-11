@@ -1,6 +1,4 @@
-import { AuthErrorBoundary } from '@/components/auth-error-boundary';
 import { AuthProvider } from '@/components/auth-provider';
-import { SessionErrorHandler } from '@/components/session-error-handler';
 import type { Metadata } from 'next';
 import { IBM_Plex_Sans } from 'next/font/google';
 import { Toaster } from 'sonner';
@@ -26,11 +24,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={ibmPlexSans.className}>
-        <AuthProvider>
-          <SessionErrorHandler>
-            <AuthErrorBoundary>{children}</AuthErrorBoundary>
-          </SessionErrorHandler>
-        </AuthProvider>
+        <AuthProvider>{children}</AuthProvider>
         <Toaster
           icons={{
             error: (

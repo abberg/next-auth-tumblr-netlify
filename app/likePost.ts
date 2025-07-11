@@ -7,13 +7,7 @@ export async function likePost({
 }: { id: string; reblog_key: string }) {
   const session = await auth();
   const token = session?.access_token;
-
-  if (!token) {
-    if (session?.error === 'RefreshTokenError') {
-      throw new Error('Session expired. Please sign in again.');
-    }
-    throw new Error('Not authenticated');
-  }
+  if (!token) throw new Error('Not authenticated');
 
   const res = await fetch('https://api.tumblr.com/v2/user/like', {
     method: 'POST',
@@ -25,9 +19,6 @@ export async function likePost({
   });
 
   if (!res.ok) {
-    if (res.status === 401) {
-      throw new Error('Session expired. Please sign in again.');
-    }
     throw new Error(`${res.status} - ${res.statusText}`);
   }
 

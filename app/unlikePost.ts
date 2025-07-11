@@ -7,13 +7,7 @@ export async function unlikePost({
 }: { id: string; reblog_key: string }) {
   const session = await auth();
   const token = session?.access_token;
-
-  if (!token) {
-    if (session?.error === 'RefreshTokenError') {
-      throw new Error('Session expired. Please sign in again.');
-    }
-    throw new Error('Not authenticated');
-  }
+  if (!token) throw new Error('Not authenticated');
 
   const res = await fetch('https://api.tumblr.com/v2/user/unlike', {
     method: 'POST',
@@ -25,9 +19,6 @@ export async function unlikePost({
   });
 
   if (!res.ok) {
-    if (res.status === 401) {
-      throw new Error('Session expired. Please sign in again.');
-    }
     throw new Error('Failed to unlike post');
   }
   return { meta: { status: 200 } };
