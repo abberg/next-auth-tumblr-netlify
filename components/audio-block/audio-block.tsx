@@ -16,6 +16,7 @@ export function AudioBlockComponent({ block }: AudioBlockComponentProps) {
           '*:h-[352px] *:max-w-fit': block.provider === 'spotify',
           '*:aspect-square *:h-auto *:max-w-full':
             block.provider === 'soundcloud',
+          '*:max-w-full': block.provider === 'tumblr',
         })}
         // biome-ignore lint/security/noDangerouslySetInnerHtml: trusted embed from Tumblr API
         dangerouslySetInnerHTML={{ __html: block.embed_html }}

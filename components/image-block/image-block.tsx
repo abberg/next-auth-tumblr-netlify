@@ -42,16 +42,9 @@ export function ImageBlockComponent({ block }: ImageBlockProps) {
   const imageRef = useRef<HTMLImageElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
-  // Load hidden state from localStorage on mount
-  useEffect(() => {
-    const savedHidden = localStorage.getItem(storageKey);
-    if (savedHidden === 'true') {
-      setIsHidden(true);
-    }
-  }, [storageKey]);
-
   const createPixelatedImage = useCallback(() => {
-    if (hasPixelated) return;
+    if (hasPixelated) return; // Already pixelated
+
     const img = imageRef.current;
     const canvas = canvasRef.current;
 
@@ -70,6 +63,19 @@ export function ImageBlockComponent({ block }: ImageBlockProps) {
     setHasPixelated(true);
   }, [hasPixelated]);
 
+  // Check localStorage immediately on mount
+  useEffect(() => {
+    const savedHidden = localStorage.getItem(storageKey);
+    if (savedHidden === 'true') {
+      setIsHidden(true);
+      // Check if image is already loaded (cached case)
+      const img = imageRef.current;
+      if (img?.complete) {
+        createPixelatedImage();
+      }
+    }
+  }, [storageKey, createPixelatedImage]);
+
   const { imageUrl, imageWidth, imageHeight } = imageData;
 
   const handleToggleHidden = () => {
@@ -85,7 +91,8 @@ export function ImageBlockComponent({ block }: ImageBlockProps) {
   };
 
   const handleOnLoad = () => {
-    if (isHidden && !hasPixelated) {
+    // If image should be hidden, pixelate it now that it's loaded
+    if (isHidden) {
       createPixelatedImage();
     }
   };
