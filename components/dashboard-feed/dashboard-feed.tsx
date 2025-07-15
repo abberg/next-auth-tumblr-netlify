@@ -81,7 +81,7 @@ export function DashboardFeed({ initialPosts }: DashboardFeedProps) {
   }, [hasMore, loading, loadMore]);
 
   return (
-    <div>
+    <>
       <DashboardList posts={posts} />
       {hasMore && (
         <div ref={loaderRef} style={{ height: 40, textAlign: 'center' }}>
@@ -91,6 +91,6 @@ export function DashboardFeed({ initialPosts }: DashboardFeedProps) {
       {!hasMore && (
         <div style={{ textAlign: 'center', color: '#888' }}>No more posts</div>
       )}
-    </div>
+    </>
   );
 }

@@ -1,16 +1,24 @@
 'use client';
 import type { VideoBlock } from '@/types/tumblr';
+import clsx from 'clsx';
 
 interface VideoBlockProps {
   block: VideoBlock;
 }
 
 export function VideoBlockComponent({ block }: VideoBlockProps) {
+  console.log(block);
   // If there's embed HTML, use it directly
   if (block.embed_html) {
     return (
       <div
-        className="w-full overflow-hidden rounded"
+        className={clsx(
+          'w-full overflow-hidden rounded *:h-auto *:max-w-full',
+          {
+            '*:aspect-video': block.provider !== 'flickr',
+            '*:aspect-square': block.provider === 'flickr',
+          }
+        )}
         // biome-ignore lint/security/noDangerouslySetInnerHtml: Using dangerouslySetInnerHTML for Tumblr embed content
         dangerouslySetInnerHTML={{ __html: block.embed_html }}
       />

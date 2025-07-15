@@ -7,6 +7,19 @@
 
   --ease-out-quad: cubic-bezier(0.25, 0.46, 0.45, 0.94);
 
+  --animate-gradient-x: 2s linear infinite gradient-x;
+
+  @keyframes gradient-x {
+    0% {
+      background-size: 200% 200%;
+      background-position: 0% center;
+    }
+    100% {
+      background-size: 200% 200%;
+      background-position: -200% center;
+    }
+  }
+
   --animate-dash: 1s var(--ease-out-quad) dash;
   --animate-arrow: 1s var(--ease-out-quad) arrow;
 

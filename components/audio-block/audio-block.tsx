@@ -7,7 +7,6 @@ interface AudioBlockComponentProps {
 }
 
 export function AudioBlockComponent({ block }: AudioBlockComponentProps) {
-  console.log(JSON.stringify(block));
   // If embed_html is present, render only the embed and skip poster/metadata
   if (block.embed_html) {
     return (
