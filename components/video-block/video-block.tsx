@@ -7,7 +7,6 @@ interface VideoBlockProps {
 }
 
 export function VideoBlockComponent({ block }: VideoBlockProps) {
-  console.log(block);
   // If there's embed HTML, use it directly
   if (block.embed_html) {
     return (

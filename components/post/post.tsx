@@ -63,6 +63,7 @@ interface PostProps {
 }
 
 export function Post({ post }: PostProps) {
+  console.log(post);
   const mainImageBlocks = getImageBlocks(post.content);
   const mainVideoBlocks = getVideoBlocks(post.content);
   const mainAudioBlocks = getAudioBlocks(post.content);

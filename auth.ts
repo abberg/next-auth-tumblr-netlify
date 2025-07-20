@@ -59,7 +59,9 @@ export const {
         token.expires_at =
           Math.floor(Date.now() / 1000) + (account.expires_in || 0);
         return token;
-      } else if (Date.now() < token.expires_at * 1000) {
+      }
+
+      if (Date.now() < token.expires_at * 1000) {
         // Subsequent logins, but the `access_token` is still valid
         return token;
       }

@@ -2,6 +2,7 @@
 
 import { auth } from '@/auth';
 import type { TumblrResponse } from '@/types/tumblr';
+import { redirect } from 'next/navigation';
 
 interface FetchDashboardParams {
   offset?: number;
@@ -16,8 +17,10 @@ export async function fetchDashboard({
 }: FetchDashboardParams) {
   const session = await auth();
   const token = session?.access_token;
-  if (!token) {
-    throw new Error('User is not authenticated');
+
+  if (!token || session?.error) {
+    //throw new Error('User is not authenticated');
+    redirect('/login');
   }
 
   const params = new URLSearchParams({

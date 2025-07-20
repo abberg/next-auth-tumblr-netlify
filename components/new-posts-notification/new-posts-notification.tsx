@@ -1,7 +1,7 @@
 'use client';
 
 import { fetchDashboard } from '@/app/fetchDashboard';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { NewPostsNotificationBanner } from './new-posts-notification-banner';
 
 interface NewPostsNotificationProps {
@@ -14,6 +14,7 @@ export function NewPostsNotification({
   const [newPostCount, setNewPostCount] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
   // Check for new posts using fetchDashboard
   const checkForNewPosts = useCallback(async () => {
@@ -40,15 +41,44 @@ export function NewPostsNotification({
     }
   }, [firstPostId]);
 
-  // Check for new posts periodically
+  // Only check for new posts when the tab is visible
   useEffect(() => {
     if (!firstPostId) {
-      return; // Don't start checking until we have a firstPostId
+      return;
     }
 
-    const interval = setInterval(checkForNewPosts, 120000); // Check every 2 min
+    function startInterval() {
+      if (intervalRef.current) return;
+      // Check immediately when tab becomes visible
+      checkForNewPosts();
+      intervalRef.current = setInterval(checkForNewPosts, 120000); // 2 min
+    }
 
-    return () => clearInterval(interval);
+    function clearIntervalIfExists() {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+        intervalRef.current = null;
+      }
+    }
+
+    function handleVisibilityChange() {
+      if (document.visibilityState === 'visible') {
+        startInterval();
+      } else {
+        clearIntervalIfExists();
+      }
+    }
+
+    if (document.visibilityState === 'visible') {
+      startInterval();
+    }
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
+    return () => {
+      clearIntervalIfExists();
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
   }, [checkForNewPosts, firstPostId]);
 
   // Handle refresh button click

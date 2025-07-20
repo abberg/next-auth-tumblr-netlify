@@ -103,7 +103,7 @@ export function ImageBlockComponent({ block }: ImageBlockProps) {
         ref={imageRef}
         src={imageUrl}
         alt={block.alt_text ?? ''}
-        className={`relative z-10 h-auto w-full rounded transition-opacity duration-200 ${
+        className={`relative z-10 h-auto w-full rounded bg-gray-300 transition-opacity duration-200 ${
           isHidden ? 'opacity-0' : 'opacity-100'
         }`}
         width={imageWidth}
