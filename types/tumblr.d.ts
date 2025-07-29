@@ -20,6 +20,7 @@ export interface AttributionObject {
     uuid: string;
     name: string;
     url: string;
+    avatar?: MediaObject[];
   };
   app_name?: string;
   display_text?: string;
@@ -178,6 +179,16 @@ export interface TumblrPost {
   layout?: Layout[];
   liked: boolean;
   note_count: number;
+  original_type?:
+    | 'note'
+    | 'video'
+    | 'photo'
+    | 'audio'
+    | 'link'
+    | 'quote'
+    | 'chat'
+    | 'link'
+    | 'text';
   post_url: string;
   reblog_key: string;
   trail?: TrailItem[];

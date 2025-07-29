@@ -96,39 +96,39 @@ export function TextBlockComponent({ block }: TextBlockProps) {
   switch (block.subtype) {
     case 'heading1':
       return (
-        <h1 className="font-bold text-gray-800 text-xl tracking-tight">
+        <h1 className="mb-4 font-bold text-gray-800 text-xl tracking-tight">
           {renderFormattedText(block.text, block.formatting)}
         </h1>
       );
     case 'heading2':
       return (
-        <h2 className="font-semibold text-gray-800 text-lg tracking-tight">
+        <h2 className="mb-4 font-semibold text-gray-800 text-lg tracking-tight">
           {renderFormattedText(block.text, block.formatting)}
         </h2>
       );
     case 'quirky':
       return (
-        <p className="text-2xl" style={{ fontFamily: quirkyFont }}>
+        <p className="mb-4 text-2xl" style={{ fontFamily: quirkyFont }}>
           {renderFormattedText(block.text, block.formatting)}
         </p>
       );
     case 'quote':
       return (
-        <blockquote className="border-gray-300 border-l-4 pl-4 font-serif text-lg italic">
+        <blockquote className="mb-4 border-gray-300 border-l-4 pl-4 font-serif text-lg italic">
           {renderFormattedText(block.text, block.formatting)}
         </blockquote>
       );
     case 'indented':
       return (
         <blockquote
-          className={`pl-${(block.indent_level ?? 1) * 4} border-gray-200 border-l-2`}
+          className={`pl-${(block.indent_level ?? 1) * 4} mb-4 border-gray-200 border-l-2`}
         >
           {renderFormattedText(block.text, block.formatting)}
         </blockquote>
       );
     case 'chat':
       return (
-        <p className="rounded-xl bg-sky-500 px-3 py-2 text-gray-50">
+        <p className="mb-4 rounded-xl bg-sky-500 px-3 py-2 text-gray-50">
           {renderFormattedText(block.text, block.formatting)}
         </p>
       );
@@ -136,13 +136,13 @@ export function TextBlockComponent({ block }: TextBlockProps) {
     case 'unordered-list-item':
       // List items are handled in the parent component for proper nesting
       return (
-        <li className={`ml-${(block.indent_level ?? 0) * 4}`}>
+        <li>
           {renderFormattedText(block.text, block.formatting)}
         </li>
       );
     default:
       return (
-        <p className="text-pretty">
+        <p className="mb-4 text-pretty">
           {renderFormattedText(block.text, block.formatting)}
         </p>
       );

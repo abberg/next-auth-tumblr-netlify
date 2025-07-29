@@ -378,3 +378,125 @@ export const LongTextPost: Story = {
     },
   },
 };
+
+export const NestedListsPost: Story = {
+  args: {
+    post: {
+      id: 123456797,
+      id_string: '123456797',
+      blog: {
+        uuid: 'blog-uuid-9',
+        name: 'listblog',
+        url: 'https://listblog.tumblr.com',
+      },
+      content: [
+        {
+          type: 'text',
+          text: "Sward's Shopping List",
+          subtype: 'heading1',
+        },
+        {
+          type: 'text',
+          text: 'First level: Fruit',
+          subtype: 'ordered-list-item',
+        },
+        {
+          type: 'text',
+          text: 'Second level: Apples',
+          subtype: 'unordered-list-item',
+          indent_level: 1,
+        },
+        {
+          type: 'text',
+          text: 'Third level: Green',
+          subtype: 'ordered-list-item',
+          indent_level: 2,
+        },
+        {
+          type: 'text',
+          text: 'Second level: Pears',
+          subtype: 'unordered-list-item',
+          indent_level: 1,
+        },
+        {
+          type: 'text',
+          text: 'First level: Vegetables',
+          subtype: 'ordered-list-item',
+        },
+        {
+          type: 'text',
+          text: "But especially don't forget:",
+        },
+        {
+          type: 'text',
+          text: 'Death, which is uncountable on this list.',
+          subtype: 'unordered-list-item',
+        },
+        {
+          type: 'text',
+          text: "Here's a simple unordered list:",
+          subtype: 'heading2',
+        },
+        {
+          type: 'text',
+          text: 'Item one',
+          subtype: 'unordered-list-item',
+        },
+        {
+          type: 'text',
+          text: 'Item two',
+          subtype: 'unordered-list-item',
+        },
+        {
+          type: 'text',
+          text: 'Item three',
+          subtype: 'unordered-list-item',
+        },
+        {
+          type: 'text',
+          text: 'And a mixed blockquote with nested lists:',
+          subtype: 'heading2',
+        },
+        {
+          type: 'text',
+          text: '1: blockquote, not nested',
+          subtype: 'indented',
+        },
+        {
+          type: 'text',
+          text: '2: blockquote, nested',
+          subtype: 'indented',
+          indent_level: 1,
+        },
+        {
+          type: 'text',
+          text: '3: nested in two blockquotes',
+          subtype: 'unordered-list-item',
+          indent_level: 2,
+        },
+        {
+          type: 'text',
+          text: '4: nested in two blockquotes and a list',
+          subtype: 'ordered-list-item',
+          indent_level: 3,
+        },
+        {
+          type: 'text',
+          text: '3: back to level 3, double nesting',
+          subtype: 'unordered-list-item',
+          indent_level: 2,
+        },
+        {
+          type: 'text',
+          text: '1: back to level 1, no nesting',
+          subtype: 'indented',
+        },
+      ],
+      layout: [],
+      liked: false,
+      note_count: 67,
+      post_url: 'https://listblog.tumblr.com/post/123456797',
+      reblog_key: 'reblog-key-9',
+    },
+  },
+};
