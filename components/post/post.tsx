@@ -1,142 +1,184 @@
 'use client';
+
 import { AudioBlockComponent } from '@/components/audio-block';
 import { BlogInfo } from '@/components/blog-info';
 import { ImageBlockComponent } from '@/components/image-block';
 import { ImageCarousel } from '@/components/image-carousel';
 import { LinkBlockComponent } from '@/components/link-block';
+import { ListRenderer } from '@/components/list-renderer';
 import { PostToolbar } from '@/components/post-toolbar';
 import { ScrollShadowBox } from '@/components/scroll-shadow-box';
 import { TextBlockComponent } from '@/components/text-block';
 import { VideoBlockComponent } from '@/components/video-block';
 import type {
   AudioBlock,
-  ContentBlock,
   ImageBlock,
-  LinkBlock,
   TextBlock,
   TumblrPost,
   VideoBlock,
 } from '@/types/tumblr';
+import { categorizePostContent } from './categorizePostContent';
 
-const isImageBlock = (block: ContentBlock): block is ImageBlock => {
-  return block.type === 'image';
+const hasListItems = (blocks: TextBlock[]): boolean => {
+  return blocks.some(
+    (block) =>
+      block.subtype === 'ordered-list-item' ||
+      block.subtype === 'unordered-list-item'
+  );
 };
 
-const isVideoBlock = (block: ContentBlock): block is VideoBlock => {
-  return block.type === 'video';
+const TextContent = ({
+  blocks,
+  keyPrefix,
+}: {
+  blocks: TextBlock[];
+  keyPrefix: string;
+}) => {
+  if (!blocks || blocks.length === 0) {
+    return null;
+  }
+
+  return hasListItems(blocks) ? (
+    <ListRenderer blocks={blocks} keyPrefix={keyPrefix} />
+  ) : (
+    blocks.map((block, index) => (
+      <TextBlockComponent
+        key={`${keyPrefix}_${
+          // biome-ignore lint/suspicious/noArrayIndexKey: index is acceptable here
+          index
+        }`}
+        block={block}
+      />
+    ))
+  );
 };
 
-const isTextBlock = (block: ContentBlock): block is TextBlock => {
-  return block.type === 'text';
-};
+const MediaContent = ({
+  imageBlocks,
+  videoBlocks,
+  audioBlocks,
+  postId,
+  keyPrefix,
+}: {
+  imageBlocks: ImageBlock[];
+  videoBlocks: VideoBlock[];
+  audioBlocks: AudioBlock[];
+  postId: string;
+  keyPrefix: string;
+}) => (
+  <>
+    {imageBlocks.length > 1 ? (
+      <ImageCarousel imageBlocks={imageBlocks} />
+    ) : imageBlocks.length === 1 ? (
+      <ImageBlockComponent block={imageBlocks[0]} />
+    ) : null}
 
-const isAudioBlock = (block: ContentBlock): block is AudioBlock => {
-  return block.type === 'audio';
-};
+    {videoBlocks.map((block, index) => {
+      const key =
+        block.media?.url ||
+        block.url ||
+        block.embed_url ||
+        `${postId}_${keyPrefix}_vid_${index}`;
+      return <VideoBlockComponent key={key} block={block} />;
+    })}
 
-const isLinkBlock = (block: ContentBlock): block is LinkBlock => {
-  return block.type === 'link';
-};
-
-const getImageBlocks = (blocks: ContentBlock[]): ImageBlock[] => {
-  return blocks.filter(isImageBlock);
-};
-
-const getVideoBlocks = (blocks: ContentBlock[]): VideoBlock[] => {
-  return blocks.filter(isVideoBlock);
-};
-
-const getAudioBlocks = (blocks: ContentBlock[]): AudioBlock[] => {
-  return blocks.filter(isAudioBlock);
-};
-
-const getTextBlocks = (blocks: ContentBlock[]): TextBlock[] => {
-  return blocks.filter(isTextBlock);
-};
-
-const getLinkBlocks = (blocks: ContentBlock[]): LinkBlock[] => {
-  return blocks.filter(isLinkBlock);
-};
+    {audioBlocks.map((block, index) => {
+      const key =
+        block.media?.url ||
+        block.url ||
+        block.embed_url ||
+        block.title ||
+        `${postId}_${keyPrefix}_aud_${index}`;
+      return <AudioBlockComponent key={key} block={block} />;
+    })}
+  </>
+);
 
 interface PostProps {
   post: TumblrPost;
 }
 
 export function Post({ post }: PostProps) {
-  console.log(post);
-  const mainImageBlocks = getImageBlocks(post.content);
-  const mainVideoBlocks = getVideoBlocks(post.content);
-  const mainAudioBlocks = getAudioBlocks(post.content);
-  const mainTextBlocks = getTextBlocks(post.content);
-  const mainLinkBlocks = getLinkBlocks(post.content);
-  const trailImageBlocks =
-    post.trail?.flatMap((trailItem) =>
-      getImageBlocks(trailItem.content || [])
-    ) || [];
-  const trailVideoBlocks =
-    post.trail?.flatMap((trailItem) =>
-      getVideoBlocks(trailItem.content || [])
-    ) || [];
-  const trailAudioBlocks =
-    post.trail?.flatMap((trailItem) =>
-      getAudioBlocks(trailItem.content || [])
-    ) || [];
-  const trailTextBlocks =
-    post.trail?.flatMap((trailItem) =>
-      getTextBlocks(trailItem.content || [])
-    ) || [];
-  const trailLinkBlocks =
-    post.trail?.flatMap((trailItem) =>
-      getLinkBlocks(trailItem.content || [])
-    ) || [];
+  const {
+    mainImageBlocks,
+    mainVideoBlocks,
+    mainAudioBlocks,
+    mainAskBlocks,
+    mainAnswerBlocks,
+    mainTextBlocks,
+    mainLinkBlocks,
+    askAttribution,
+    trailImageBlocks,
+    trailVideoBlocks,
+    trailAudioBlocks,
+    trailTextBlocks,
+    trailLinkBlocks,
+  } = categorizePostContent(post);
 
   const hasTextOrLinkContent =
     mainTextBlocks.length > 0 ||
+    mainAnswerBlocks.length > 0 ||
     trailTextBlocks.length > 0 ||
     mainLinkBlocks.length > 0 ||
     trailLinkBlocks.length > 0;
 
   return (
     <div className="flex flex-col gap-3">
-      {/* Display main content images */}
-      {mainImageBlocks.length > 1 ? (
-        <ImageCarousel imageBlocks={mainImageBlocks} />
-      ) : mainImageBlocks.length === 1 ? (
-        <ImageBlockComponent block={mainImageBlocks[0]} />
-      ) : null}
+      {/* Display main content media */}
+      <MediaContent
+        imageBlocks={mainImageBlocks}
+        videoBlocks={mainVideoBlocks}
+        audioBlocks={mainAudioBlocks}
+        postId={post.id_string}
+        keyPrefix="main"
+      />
 
-      {/* Display main content videos */}
-      {mainVideoBlocks.map((block) => {
-        const key = block.media?.url || block.url || block.embed_url;
-        return <VideoBlockComponent key={key} block={block} />;
-      })}
+      {/* Display trail content media */}
+      <MediaContent
+        imageBlocks={trailImageBlocks}
+        videoBlocks={trailVideoBlocks}
+        audioBlocks={trailAudioBlocks}
+        postId={post.id_string}
+        keyPrefix="trail"
+      />
 
-      {/* Display main content audio */}
-      {mainAudioBlocks.map((block) => {
-        const key =
-          block.media?.url || block.url || block.embed_url || block.title;
-        return <AudioBlockComponent key={key} block={block} />;
-      })}
+      {/* Ask */}
+      {mainAskBlocks && mainAskBlocks.length > 0 && (
+        <div className="flex gap-2">
+          <div className="relative flex-1 rounded-md bg-gray-500 px-3 py-2 text-white after:absolute after:top-4 after:right-[-14px] after:border-7 after:border-transparent after:border-l-gray-500 after:content-['']">
+            <p className="mb-4">
+              {askAttribution?.blog ? (
+                <a
+                  href={askAttribution.blog.url}
+                  className="font-bold hover:underline"
+                >
+                  {askAttribution.blog.name}
+                </a>
+              ) : (
+                'Anonymous'
+              )}{' '}
+              asked:
+            </p>
 
-      {/* Display trail content images */}
-      {trailImageBlocks.length > 1 ? (
-        <ImageCarousel imageBlocks={trailImageBlocks} />
-      ) : trailImageBlocks.length === 1 ? (
-        <ImageBlockComponent block={trailImageBlocks[0]} />
-      ) : null}
+            <TextContent
+              blocks={mainAskBlocks}
+              keyPrefix={`${post.id_string}_ask`}
+            />
+          </div>
 
-      {/* Display trail content videos */}
-      {trailVideoBlocks.map((block) => {
-        const key = block.media?.url || block.url || block.embed_url;
-        return <VideoBlockComponent key={key} block={block} />;
-      })}
-
-      {/* Display trail content audio */}
-      {trailAudioBlocks.map((block) => {
-        const key =
-          block.media?.url || block.url || block.embed_url || block.title;
-        return <AudioBlockComponent key={key} block={block} />;
-      })}
+          <img
+            src={
+              askAttribution?.blog
+                ? askAttribution?.blog?.avatar?.[3]?.url
+                : 'https://assets.tumblr.com/pop/src/assets/images/avatar/anonymous_avatar_96-223fabe0.png'
+            }
+            alt={
+              askAttribution?.blog ? askAttribution?.blog?.name : 'Anonymous'
+            }
+            className="h-10 w-10"
+          />
+        </div>
+      )}
 
       {/* Display blog info */}
       <BlogInfo post={post} />
@@ -144,27 +186,31 @@ export function Post({ post }: PostProps) {
       {/* Display text and link content */}
       {hasTextOrLinkContent && (
         <ScrollShadowBox maxHeight="10lh">
-          {/* Display main content text */}
-          {mainTextBlocks.map((block, index) => (
-            <TextBlockComponent
-              key={`${post.id_string}_txt_${index}`}
-              block={block}
-            />
-          ))}
-          {/* Display trail content text */}
-          {trailTextBlocks.map((block, index) => (
-            <TextBlockComponent
-              key={`${post.id_string}_ttxt_${index}`}
-              block={block}
-            />
-          ))}
+          <TextContent
+            blocks={mainTextBlocks}
+            keyPrefix={`${post.id_string}_mtxt`}
+          />
+          <TextContent
+            blocks={trailTextBlocks}
+            keyPrefix={`${post.id_string}_ttxt`}
+          />
+          <TextContent
+            blocks={mainAnswerBlocks}
+            keyPrefix={`${post.id_string}_ans`}
+          />
           {/* Display main content links */}
-          {mainLinkBlocks.map((block) => (
-            <LinkBlockComponent key={block.url} block={block} />
+          {mainLinkBlocks.map((block, index) => (
+            <LinkBlockComponent
+              key={block.url || `${post.id_string}_main_link_${index}`}
+              block={block}
+            />
           ))}
           {/* Display trail content links */}
-          {trailLinkBlocks.map((block) => (
-            <LinkBlockComponent key={block.url} block={block} />
+          {trailLinkBlocks.map((block, index) => (
+            <LinkBlockComponent
+              key={block.url || `${post.id_string}_trail_link_${index}`}
+              block={block}
+            />
           ))}
         </ScrollShadowBox>
       )}
