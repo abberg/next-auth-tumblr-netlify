@@ -144,8 +144,8 @@ export function Post({ post }: PostProps) {
 
       {/* Ask */}
       {mainAskBlocks && mainAskBlocks.length > 0 && (
-        <div className="flex gap-2">
-          <div className="relative flex-1 rounded-md bg-gray-500 px-3 py-2 text-white after:absolute after:top-4 after:right-[-14px] after:border-7 after:border-transparent after:border-l-gray-500 after:content-['']">
+        <div className="flex gap-2.5">
+          <div className="relative flex-1 rounded-md bg-gray-500 px-3 pt-2 text-white after:absolute after:top-3.5 after:right-[-14px] after:border-7 after:border-transparent after:border-l-gray-500 after:content-['']">
             <p className="mb-4">
               {askAttribution?.blog ? (
                 <a
@@ -185,7 +185,7 @@ export function Post({ post }: PostProps) {
 
       {/* Display text and link content */}
       {hasTextOrLinkContent && (
-        <ScrollShadowBox maxHeight="10lh">
+        <ScrollShadowBox maxHeight="11lh">
           <TextContent
             blocks={mainTextBlocks}
             keyPrefix={`${post.id_string}_mtxt`}
