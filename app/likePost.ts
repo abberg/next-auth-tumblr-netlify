@@ -1,6 +1,5 @@
 'use server';
 import { auth } from '@/auth';
-import { tumblrRequest } from './tumblrClient';
 
 export async function likePost({
   id,
@@ -8,21 +7,20 @@ export async function likePost({
 }: { id: string; reblog_key: string }) {
   const session = await auth();
   const token = session?.access_token;
-  const queueKey = session?.user?.id ?? session?.user?.name ?? 'anonymous';
-  if (session?.error === 'RefreshTokenError')
-    throw new Error('Not authenticated');
-  if (session?.error === 'TemporaryRefreshError') {
-    throw new Error('Temporary authentication issue. Please retry shortly.');
-  }
   if (!token) throw new Error('Not authenticated');
 
-  await tumblrRequest({
-    token,
+  const res = await fetch('https://api.tumblr.com/v2/user/like', {
     method: 'POST',
-    path: '/user/like',
-    body: { id, reblog_key },
-    queueKey,
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ id, reblog_key }),
   });
+
+  if (!res.ok) {
+    throw new Error(`${res.status} - ${res.statusText}`);
+  }
 
   return { meta: { status: 200 } };
 }

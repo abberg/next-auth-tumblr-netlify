@@ -7,20 +7,17 @@ interface LikeButtonProps {
   isLiked: boolean;
   onClick?: () => void;
   'aria-label'?: string;
-  disabled?: boolean;
 }
 
 export function LikeButton({
   isLiked,
   onClick,
   'aria-label': ariaLabel,
-  disabled = false,
 }: LikeButtonProps) {
   const [isHeartAnimating, setIsHeartAnimating] = useState(false);
   const [isStrokeAnimating, setIsStrokeAnimating] = useState(false);
 
   const handleClick = () => {
-    if (disabled) return;
     if (!isLiked) {
       setIsHeartAnimating(true);
       setIsStrokeAnimating(true);
@@ -45,8 +42,7 @@ export function LikeButton({
       type="button"
       aria-label={finalAriaLabel}
       onClick={handleClick}
-      disabled={disabled}
-      className="p-1 disabled:cursor-not-allowed disabled:opacity-60"
+      className="p-1"
     >
       <svg
         width="18"

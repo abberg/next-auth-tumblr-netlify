@@ -1,6 +1,5 @@
 'use server';
 
-import { TumblrApiError, tumblrRequest } from '@/app/tumblrClient';
 import { auth } from '@/auth';
 import type { TumblrResponse } from '@/types/tumblr';
 import { redirect } from 'next/navigation';
@@ -18,35 +17,38 @@ export async function fetchDashboard({
 }: FetchDashboardParams) {
   const session = await auth();
   const token = session?.access_token;
-  const queueKey = session?.user?.id ?? session?.user?.name ?? 'anonymous';
 
-  if (!token || session?.error === 'RefreshTokenError') {
+  if (!token || session?.error) {
+    //throw new Error('User is not authenticated');
     redirect('/login');
   }
-  if (session?.error === 'TemporaryRefreshError') {
-    throw new Error('Temporary authentication issue. Please retry shortly.');
-  }
-  const params: Record<string, string> = {
+
+  const params = new URLSearchParams({
     limit: limit.toString(),
     offset: offset.toString(),
     npf: 'true',
-  };
+  });
+
+  // Add since_id if provided
   if (since_id) {
-    params.since_id = since_id;
+    params.append('since_id', since_id);
   }
 
-  try {
-    const data = await tumblrRequest<TumblrResponse>({
-      token,
-      path: '/user/dashboard',
-      params,
-      queueKey,
-    });
-    return data.response.posts;
-  } catch (error) {
-    if (error instanceof TumblrApiError && error.isAuthError) {
-      redirect('/login');
+  const url = `http://api.tumblr.com/v2/user/dashboard?${params}`;
+  const res = await fetch(url, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (!res.ok) {
+    if (res.status === 401) {
+      throw new Error('Session expired. Please sign in again.');
     }
-    throw error;
+    throw new Error(`Request failed with status ${res.status}`);
   }
+
+  const data: TumblrResponse = await res.json();
+  return data.response.posts;
 }
