@@ -7,15 +7,18 @@ import { ReblogIcon } from '../reblog-icon';
 interface ReblogButtonProps {
   onClick?: () => void;
   'aria-label'?: string;
+  disabled?: boolean;
 }
 
 export function ReblogButton({
   onClick,
   'aria-label': ariaLabel = 'Reblog Post',
+  disabled = false,
 }: ReblogButtonProps) {
   const [isAnimating, setIsAnimating] = useState(false);
 
   const handleClick = () => {
+    if (disabled) return;
     setIsAnimating(true);
     onClick?.();
   };
@@ -29,7 +32,8 @@ export function ReblogButton({
       type="button"
       aria-label={ariaLabel}
       onClick={handleClick}
-      className="p-1 hover:cursor-pointer"
+      disabled={disabled}
+      className="p-1 hover:cursor-pointer disabled:cursor-not-allowed disabled:opacity-60"
     >
       <ReblogIcon
         className={clsx(

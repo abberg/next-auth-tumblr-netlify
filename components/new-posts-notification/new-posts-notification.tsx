@@ -15,13 +15,15 @@ export function NewPostsNotification({
   const [isVisible, setIsVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const requestInFlightRef = useRef(false);
 
   // Check for new posts using fetchDashboard
   const checkForNewPosts = useCallback(async () => {
-    if (!firstPostId) {
+    if (!firstPostId || requestInFlightRef.current) {
       return; // Can't check for new posts without a since_id
     }
 
+    requestInFlightRef.current = true;
     setIsLoading(true);
 
     try {
@@ -37,6 +39,7 @@ export function NewPostsNotification({
       console.error('Error checking for new posts:', error);
       // Don't show notification on error, just log it
     } finally {
+      requestInFlightRef.current = false;
       setIsLoading(false);
     }
   }, [firstPostId]);
