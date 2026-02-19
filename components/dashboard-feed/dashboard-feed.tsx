@@ -19,13 +19,18 @@ export function DashboardFeed({ initialPosts }: DashboardFeedProps) {
   const [hasMore, setHasMore] = useState(true);
   const loaderRef = useRef<HTMLDivElement | null>(null);
   const observerRef = useRef<IntersectionObserver | null>(null);
+  const requestInFlightRef = useRef(false);
+  const offsetRef = useRef(initialPosts.length);
 
   const loadMore = useCallback(async () => {
-    if (loading || !hasMore) return;
+    if (requestInFlightRef.current || !hasMore) return;
+    requestInFlightRef.current = true;
     setLoading(true);
+
+    const currentOffset = offsetRef.current;
     try {
       const newPosts = await fetchDashboard({
-        offset,
+        offset: currentOffset,
         limit: PAGE_SIZE,
       });
 
@@ -38,19 +43,22 @@ export function DashboardFeed({ initialPosts }: DashboardFeedProps) {
       });
 
       if (
-        offset + newPosts.length > MAX_OFFSET ||
+        currentOffset + newPosts.length > MAX_OFFSET ||
         newPosts.length < PAGE_SIZE
       ) {
         setHasMore(false);
       } else {
-        setOffset((prev) => prev + newPosts.length);
+        const nextOffset = currentOffset + newPosts.length;
+        offsetRef.current = nextOffset;
+        setOffset(nextOffset);
       }
     } catch (error) {
       setHasMore(false);
     } finally {
+      requestInFlightRef.current = false;
       setLoading(false);
     }
-  }, [offset, loading, hasMore]);
+  }, [hasMore]);
 
   useEffect(() => {
     const currentLoader = loaderRef.current;
@@ -64,7 +72,12 @@ export function DashboardFeed({ initialPosts }: DashboardFeedProps) {
     observerRef.current = new IntersectionObserver(
       (entries) => {
         const entry = entries[0];
-        if (entry.isIntersecting && hasMore && !loading) {
+        if (
+          entry.isIntersecting &&
+          hasMore &&
+          !requestInFlightRef.current &&
+          !loading
+        ) {
           loadMore();
         }
       },
@@ -79,6 +92,10 @@ export function DashboardFeed({ initialPosts }: DashboardFeedProps) {
       }
     };
   }, [hasMore, loading, loadMore]);
+
+  useEffect(() => {
+    offsetRef.current = offset;
+  }, [offset]);
 
   return (
     <>

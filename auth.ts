@@ -2,6 +2,8 @@ import type { Session } from 'next-auth';
 import NextAuth from 'next-auth';
 import type { JWT } from 'next-auth/jwt';
 
+const TOKEN_REFRESH_BUFFER_SECONDS = 60;
+
 export const {
   handlers: { GET, POST },
   auth,
@@ -58,15 +60,24 @@ export const {
         token.refresh_token = account.refresh_token;
         token.expires_at =
           Math.floor(Date.now() / 1000) + (account.expires_in || 0);
+        token.error = undefined;
         return token;
       }
 
-      if (Date.now() < token.expires_at * 1000) {
+      const expiresAt = token.expires_at ?? 0;
+      if (
+        Date.now() <
+        Math.max(expiresAt - TOKEN_REFRESH_BUFFER_SECONDS, 0) * 1000
+      ) {
         // Subsequent logins, but the `access_token` is still valid
         return token;
       }
+
       // Access token is expired, try to refresh it
-      if (!token.refresh_token) throw new TypeError('Missing refresh_token');
+      if (!token.refresh_token) {
+        token.error = 'RefreshTokenError';
+        return token;
+      }
 
       try {
         const response = await fetch('https://api.tumblr.com/v2/oauth2/token', {
@@ -81,8 +92,27 @@ export const {
         });
 
         if (!response.ok) {
-          const errorData = await response.json();
-          throw errorData;
+          let errorData: { error?: string; error_description?: string } | null =
+            null;
+          try {
+            errorData = await response.json();
+          } catch {
+            errorData = null;
+          }
+
+          const isFatalRefreshError =
+            response.status === 400 ||
+            response.status === 401 ||
+            response.status === 403 ||
+            errorData?.error === 'invalid_grant';
+
+          if (isFatalRefreshError) {
+            token.error = 'RefreshTokenError';
+          } else {
+            // Do not force re-authentication for transient refresh failures
+            token.error = 'TemporaryRefreshError';
+          }
+          return token;
         }
 
         const newTokens: {
@@ -95,12 +125,13 @@ export const {
           ...token,
           access_token: newTokens.access_token,
           expires_at: Math.floor(Date.now() / 1000 + newTokens.expires_in),
-          refresh_token: newTokens.refresh_token,
+          refresh_token: newTokens.refresh_token ?? token.refresh_token,
+          error: undefined,
         };
       } catch (error) {
         console.error('Error refreshing access_token', error);
-        // If we fail to refresh the token, return an error so we can handle it on the page
-        token.error = 'RefreshTokenError';
+        // Keep session alive on transient refresh/network issues.
+        token.error = 'TemporaryRefreshError';
         return token;
       }
     },
