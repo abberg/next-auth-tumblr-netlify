@@ -14,7 +14,7 @@ export function DashboardList({ posts }: DashboardListProps) {
   return (
     <ul className="my-6 ms-0 grid list-none grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3">
       {posts.map((post) => (
-        <li key={post.id}>
+        <li key={post.id_string} data-post-id={post.id_string}>
           <Post post={post} />
         </li>
       ))}

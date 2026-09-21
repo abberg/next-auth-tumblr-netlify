@@ -1,15 +1,19 @@
 'use client';
 
-import { fetchDashboard } from '@/app/fetchDashboard';
+import { fetchDashboardQueued } from '@/lib/dashboard-request-queue';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { NewPostsNotificationBanner } from './new-posts-notification-banner';
 
 interface NewPostsNotificationProps {
   firstPostId?: string; // ID of the first post to use as since_id
+  onRefresh: () => void;
+  refreshing?: boolean;
 }
 
 export function NewPostsNotification({
   firstPostId,
+  onRefresh,
+  refreshing = false,
 }: NewPostsNotificationProps) {
   const [newPostCount, setNewPostCount] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
@@ -27,9 +31,9 @@ export function NewPostsNotification({
     setIsLoading(true);
 
     try {
-      const newPosts = await fetchDashboard({
+      const newPosts = await fetchDashboardQueued({
         since_id: firstPostId,
-        limit: 50,
+        limit: 20,
       });
       if (Array.isArray(newPosts) && newPosts.length > 0) {
         setNewPostCount(newPosts.length);
@@ -86,17 +90,15 @@ export function NewPostsNotification({
 
   // Handle refresh button click
   const handleRefresh = () => {
-    setIsVisible(false);
-    setNewPostCount(0);
-    window.scrollTo({ top: 0 });
-    window.location.reload();
+    // Keep the banner available for retry until a successful refresh remounts it.
+    onRefresh();
   };
 
   return (
     <NewPostsNotificationBanner
       newPostCount={newPostCount}
       isVisible={isVisible}
-      isLoading={isLoading}
+      isLoading={isLoading || refreshing}
       onRefresh={handleRefresh}
     />
   );

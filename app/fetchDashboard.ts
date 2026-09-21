@@ -9,13 +9,23 @@ interface FetchDashboardParams {
   offset?: number;
   limit?: number;
   since_id?: string;
+  before_id?: string;
 }
 
 export async function fetchDashboard({
   offset = 0,
   limit = 18,
   since_id,
+  before_id,
 }: FetchDashboardParams) {
+  if (!Number.isInteger(limit) || limit < 1 || limit > 20) {
+    throw new Error('Dashboard limit must be between 1 and 20.');
+  }
+  if (before_id && (!/^\d+$/.test(before_id) || since_id || offset !== 0)) {
+    throw new Error(
+      'An older-post cursor cannot be combined with an offset or newer-post cursor.'
+    );
+  }
   const session = await auth();
   const token = session?.access_token;
   const queueKey = session?.user?.id ?? session?.user?.name ?? 'anonymous';
@@ -28,7 +38,7 @@ export async function fetchDashboard({
   }
   const params: Record<string, string> = {
     limit: limit.toString(),
-    offset: offset.toString(),
+    ...(before_id ? { before_id } : { offset: offset.toString() }),
     npf: 'true',
   };
   if (since_id) {
