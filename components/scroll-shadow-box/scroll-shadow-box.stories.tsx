@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/nextjs';
+import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { ScrollShadowBox } from './scroll-shadow-box';
 
 const meta: Meta<typeof ScrollShadowBox> = {

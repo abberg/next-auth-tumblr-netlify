@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/nextjs';
+import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { ToastDemo } from './toast-demo';
 
 const meta: Meta<typeof ToastDemo> = {

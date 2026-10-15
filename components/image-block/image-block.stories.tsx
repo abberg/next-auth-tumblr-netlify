@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/nextjs';
+import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { ImageBlockComponent } from './image-block';
 
 const meta: Meta<typeof ImageBlockComponent> = {

@@ -1,4 +1,4 @@
-import type { StorybookConfig } from '@storybook/nextjs';
+import type { StorybookConfig } from '@storybook/nextjs-vite';
 
 const config: StorybookConfig = {
   stories: [
@@ -12,10 +12,9 @@ const config: StorybookConfig = {
     '@storybook/addon-vitest',
   ],
   framework: {
-    name: '@storybook/nextjs',
+    name: '@storybook/nextjs-vite',
     options: {},
   },
-  staticDirs: ['../public'],
   typescript: {
     check: false,
     reactDocgen: 'react-docgen-typescript',

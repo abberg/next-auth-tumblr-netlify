@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/nextjs';
+import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { CardSkeleton } from './card-skeleton';
 
 const meta: Meta<typeof CardSkeleton> = {

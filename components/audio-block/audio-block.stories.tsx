@@ -1,5 +1,5 @@
 import type { AudioBlock } from '@/types/tumblr';
-import type { Meta, StoryObj } from '@storybook/nextjs';
+import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { AudioBlockComponent } from './audio-block';
 
 const meta: Meta<typeof AudioBlockComponent> = {

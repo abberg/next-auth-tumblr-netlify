@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/nextjs';
+import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { LinkBlockComponent } from './link-block';
 
 const meta: Meta<typeof LinkBlockComponent> = {

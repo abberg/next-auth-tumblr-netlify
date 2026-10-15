@@ -19,7 +19,9 @@ request reports its error to its caller and releases the next queued request.
 The server-side per-user queue remains in place; separate tabs do not share the
 client queue.
 
-Run focused checks with `pnpm test:feed` and build with `pnpm build`.
+Run unit tests with `pnpm test`, story tests with `pnpm test:storybook`, and build with `pnpm build`.
+
+Netlify builds with `pnpm build:deploy`, which also publishes Storybook at `/storybook` on the deployed site.
 In development, `/dev/dashboard-cursor` provides an authenticated, read-only
 cursor experiment. It compares known continuation, multiple anchors, and replay
 results. Keep the experiment open and replay after the dashboard head changes

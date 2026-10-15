@@ -13,10 +13,7 @@ export default defineConfig({
     configDir: path.join(dirname, '.storybook')
   })],
   test: {
-    environment: 'jsdom',
-    include: ['**/*.{test,spec}.{js,jsx,ts,tsx}'],
     globals: true,
-    setupFiles: ['./vitest.setup.ts'],
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json', 'html']

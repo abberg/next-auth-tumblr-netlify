@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/nextjs';
+import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { PostToolbar } from './post-toolbar';
 
 const meta: Meta<typeof PostToolbar> = {

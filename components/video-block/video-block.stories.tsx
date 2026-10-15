@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/nextjs';
+import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { VideoBlockComponent } from './video-block';
 
 const meta: Meta<typeof VideoBlockComponent> = {
