@@ -1,5 +1,5 @@
 import type { TumblrPost } from '@/types/tumblr';
-import type { Meta, StoryObj } from '@storybook/nextjs';
+import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { DashboardFeed } from './dashboard-feed';
 
 const meta: Meta<typeof DashboardFeed> = {

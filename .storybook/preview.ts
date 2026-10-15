@@ -1,5 +1,10 @@
-import type { Preview } from '@storybook/nextjs';
+import type { Preview } from '@storybook/nextjs-vite';
+import { sb } from 'storybook/test';
 import '../app/globals.css';
+
+// The server actions components import reach next-auth, which only runs on the
+// server. Swap in __mocks__/auth.ts so stories load in the browser.
+sb.mock(import('../auth.ts'));
 
 const preview: Preview = {
   parameters: {

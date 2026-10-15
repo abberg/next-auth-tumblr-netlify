@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/nextjs';
+import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { ImageCarousel } from './image-carousel';
 
 const meta: Meta<typeof ImageCarousel> = {

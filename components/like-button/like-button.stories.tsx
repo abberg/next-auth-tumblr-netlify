@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/nextjs';
+import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { LikeButton } from './like-button';
 
 const meta: Meta<typeof LikeButton> = {
