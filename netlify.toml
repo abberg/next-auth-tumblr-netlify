@@ -1,0 +1,4 @@
+[build]
+  # Builds Storybook into public/storybook, then the Next app.
+  command = "pnpm build:deploy"
+  publish = ".next"

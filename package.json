@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
+    "build:deploy": "storybook build --output-dir public/storybook && next build",
     "start": "next start",
     "lint": "next lint",
     "format": "biome format --write .",

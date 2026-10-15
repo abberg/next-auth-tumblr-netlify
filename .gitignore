@@ -138,3 +138,5 @@ dist
 .DS_Store
 *storybook.log
 storybook-static
+# Storybook is built into the deploy by `pnpm build:deploy`
+/public/storybook
