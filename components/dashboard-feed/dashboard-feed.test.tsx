@@ -34,6 +34,7 @@ vi.mock('@/components/new-posts-notification/new-posts-notification', () => ({
     </>
   ),
 }));
+import { TestTumblrActions } from '@/test/tumblr-actions';
 import { DashboardFeed } from './dashboard-feed';
 const posts = (start: number, count = 18) =>
   Array.from({ length: count }, (_, index) => ({
@@ -77,7 +78,9 @@ describe('dashboard reading flow', () => {
           reject = fail;
         })
     );
-    render(<DashboardFeed initialPosts={posts(1000)} accountId="one" />);
+    render(<DashboardFeed initialPosts={posts(1000)} accountId="one" />, {
+      wrapper: TestTumblrActions,
+    });
     fireEvent.click(screen.getByRole('button', { name: 'Load older posts' }));
     fireEvent.click(screen.getByRole('button', { name: 'Loading…' }));
     await waitFor(() => expect(fetch).toHaveBeenCalledTimes(1));
@@ -101,7 +104,9 @@ describe('dashboard reading flow', () => {
         position: { postId: '999', top: -24 },
       })
     );
-    render(<DashboardFeed initialPosts={posts(2000)} accountId="one" />);
+    render(<DashboardFeed initialPosts={posts(2000)} accountId="one" />, {
+      wrapper: TestTumblrActions,
+    });
     expect(screen.getAllByRole('listitem')).toHaveLength(18);
     expect(screen.getByTestId('poll-anchor')).toHaveTextContent('1000');
     expect(screen.queryByText('2000')).not.toBeInTheDocument();
@@ -120,11 +125,15 @@ describe('dashboard reading flow', () => {
         position: null,
       })
     );
-    render(<DashboardFeed initialPosts={posts(2000)} accountId="two" />);
+    render(<DashboardFeed initialPosts={posts(2000)} accountId="two" />, {
+      wrapper: TestTumblrActions,
+    });
     expect(screen.getByTestId('poll-anchor')).toHaveTextContent('2000');
   });
   it('starts fresh only after notification refresh succeeds', async () => {
-    render(<DashboardFeed initialPosts={posts(1000)} accountId="one" />);
+    render(<DashboardFeed initialPosts={posts(1000)} accountId="one" />, {
+      wrapper: TestTumblrActions,
+    });
     fetch.mockRejectedValueOnce(new Error('offline'));
     fireEvent.click(
       screen.getByRole('button', { name: 'New posts available' })
@@ -151,7 +160,9 @@ describe('dashboard reading flow', () => {
         position: null,
       })
     );
-    render(<DashboardFeed initialPosts={posts(1000)} accountId="one" />);
+    render(<DashboardFeed initialPosts={posts(1000)} accountId="one" />, {
+      wrapper: TestTumblrActions,
+    });
     fetch.mockResolvedValueOnce(posts(748, 16));
     fireEvent.click(screen.getByRole('button', { name: 'Load older posts' }));
     await screen.findByText(

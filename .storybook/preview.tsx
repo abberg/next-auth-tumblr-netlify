@@ -1,12 +1,25 @@
+import { TumblrActionsProvider } from '@/components/tumblr-actions';
 import type { Preview } from '@storybook/nextjs-vite';
-import { sb } from 'storybook/test';
+import { fn } from 'storybook/test';
 import '../app/globals.css';
 
-// The server actions components import reach next-auth, which only runs on the
-// server. Swap in __mocks__/auth.ts so stories load in the browser.
-sb.mock(import('../auth.ts'));
+// Stories never talk to Tumblr: components get fakes that resolve immediately
+// and show up in the Actions panel.
+const tumblrActions = {
+  fetchDashboard: fn(async () => []).mockName('fetchDashboard'),
+  likePost: fn(async () => ({})).mockName('likePost'),
+  unlikePost: fn(async () => ({})).mockName('unlikePost'),
+  reblogPost: fn(async () => ({})).mockName('reblogPost'),
+};
 
 const preview: Preview = {
+  decorators: [
+    (Story) => (
+      <TumblrActionsProvider actions={tumblrActions}>
+        <Story />
+      </TumblrActionsProvider>
+    ),
+  ],
   parameters: {
     actions: { argTypesRegex: '^on[A-Z].*' },
 
@@ -68,8 +81,8 @@ const preview: Preview = {
       // 'todo' - show a11y violations in the test UI only
       // 'error' - fail CI on a11y violations
       // 'off' - skip a11y checks entirely
-      test: 'todo'
-    }
+      test: 'todo',
+    },
   },
 };
 

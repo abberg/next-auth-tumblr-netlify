@@ -1,8 +1,6 @@
-import { likePost } from '@/app/likePost';
-import { reblogPost } from '@/app/reblogPost';
-import { unlikePost } from '@/app/unlikePost';
 import { LikeButton } from '@/components/like-button';
 import { ReblogButton } from '@/components/reblog-button';
+import { useTumblrActions } from '@/components/tumblr-actions';
 import { startTransition, useOptimistic, useRef, useState } from 'react';
 import { toast } from 'sonner';
 import { ReblogIcon } from '../reblog-icon';
@@ -24,6 +22,7 @@ export function PostToolbar({
   postUrl = '#',
   liked = false,
 }: PostToolbarProps) {
+  const { likePost, unlikePost, reblogPost } = useTumblrActions();
   const actionInFlightRef = useRef(false);
   const [isActionPending, setIsActionPending] = useState(false);
 

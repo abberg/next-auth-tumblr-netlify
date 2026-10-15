@@ -2,7 +2,7 @@
 
 import { DashboardList } from '@/components/dashboard-list';
 import { NewPostsNotification } from '@/components/new-posts-notification/new-posts-notification';
-import { fetchDashboardQueued } from '@/lib/dashboard-request-queue';
+import { useTumblrActions } from '@/components/tumblr-actions';
 import type { TumblrPost } from '@/types/tumblr';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import {
@@ -20,6 +20,7 @@ interface DashboardFeedProps {
 }
 
 export function DashboardFeed({ initialPosts, accountId }: DashboardFeedProps) {
+  const { fetchDashboard } = useTumblrActions();
   const [session, setSession] = useState(() => createFeedSession(initialPosts));
   const [ready, setReady] = useState(false);
   const [restorePosition, setRestorePosition] =
@@ -158,7 +159,7 @@ export function DashboardFeed({ initialPosts, accountId }: DashboardFeedProps) {
     setError('');
     try {
       const limit = Math.min(PAGE_SIZE, MAX_POSTS - session.consumed);
-      const posts = await fetchDashboardQueued({
+      const posts = await fetchDashboard({
         before_id: session.cursor,
         limit,
       });
@@ -174,7 +175,7 @@ export function DashboardFeed({ initialPosts, accountId }: DashboardFeedProps) {
       inFlight.current = false;
       if (mounted.current) setLoading(false);
     }
-  }, [ready, session]);
+  }, [fetchDashboard, ready, session]);
 
   const showLatest = async () => {
     if (inFlight.current) return;
@@ -182,7 +183,7 @@ export function DashboardFeed({ initialPosts, accountId }: DashboardFeedProps) {
     setLoading(true);
     setError('');
     try {
-      const posts = await fetchDashboardQueued({ limit: PAGE_SIZE });
+      const posts = await fetchDashboard({ limit: PAGE_SIZE });
       if (!mounted.current) return;
       setRestorePosition(null);
       positionRef.current = null;

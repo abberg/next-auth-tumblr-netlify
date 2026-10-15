@@ -18,6 +18,7 @@ vi.mock('@/components/dashboard-list', () => ({
     </ul>
   ),
 }));
+import { TestTumblrActions } from '@/test/tumblr-actions';
 import { DashboardFeed } from './dashboard-feed';
 
 it('holds a feed load until the real notification check finishes', async () => {
@@ -47,7 +48,9 @@ it('holds a feed load until the real notification check finishes', async () => {
         })
     )
     .mockResolvedValueOnce([]);
-  render(<DashboardFeed initialPosts={posts} />);
+  render(<DashboardFeed initialPosts={posts} />, {
+    wrapper: TestTumblrActions,
+  });
   await waitFor(() =>
     expect(fetch).toHaveBeenCalledWith({ since_id: '1000', limit: 20 })
   );

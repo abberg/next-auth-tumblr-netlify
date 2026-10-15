@@ -1,6 +1,6 @@
 'use client';
 
-import { fetchDashboardQueued } from '@/lib/dashboard-request-queue';
+import { useTumblrActions } from '@/components/tumblr-actions';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { NewPostsNotificationBanner } from './new-posts-notification-banner';
 
@@ -15,6 +15,7 @@ export function NewPostsNotification({
   onRefresh,
   refreshing = false,
 }: NewPostsNotificationProps) {
+  const { fetchDashboard } = useTumblrActions();
   const [newPostCount, setNewPostCount] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -31,7 +32,7 @@ export function NewPostsNotification({
     setIsLoading(true);
 
     try {
-      const newPosts = await fetchDashboardQueued({
+      const newPosts = await fetchDashboard({
         since_id: firstPostId,
         limit: 20,
       });
@@ -46,7 +47,7 @@ export function NewPostsNotification({
       requestInFlightRef.current = false;
       setIsLoading(false);
     }
-  }, [firstPostId]);
+  }, [fetchDashboard, firstPostId]);
 
   // Only check for new posts when the tab is visible
   useEffect(() => {
